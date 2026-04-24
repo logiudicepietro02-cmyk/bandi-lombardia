@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bandi Lombardia - G.I. Finance</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--acc:#4f46e5;--gold:#d4a843;--surface:#f7f7fb;--card:#fff;--border:#e8e8f0;--green:#059669;--red:#dc2626;--amber:#d97706;--muted:#8888aa}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink)}
+header{background:var(--ink);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--acc);position:sticky;top:0;z-index:9}
+.logo{display:flex;align-items:center;gap:12px}.badge{width:36px;height:36px;background:var(--acc);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:bold}
+.lt{color:#fff;font-family:'DM Serif Display',serif;font-size:18px}.ls{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:p 2s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
+.hero{background:linear-gradient(135deg,var(--ink),#2d2b5a);padding:2.5rem 2rem}
+.hero h1{font-family:'DM Serif Display',serif;font-size:2.4rem;color:#fff;line-height:1.15}.hero h1 em{color:var(--gold);font-style:italic}
+.hero p{color:rgba(255,255,255,.6);font-size:14px;margin-top:.5rem}
+.stats{display:flex;gap:2rem;margin-top:1.5rem}.stat{display:flex;flex-direction:column;gap:2px}
+.sn{font-family:'DM Serif Display',serif;font-size:2rem;color:#fff}.sl{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em}
+.sdiv{width:1px;background:rgba(255,255,255,.15)}
+.toolbar{padding:1rem 2rem;display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:var(--card)}
+.search{flex:1;min-width:200px;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;font-family:inherit;background:var(--surface)}
+.search:focus{border-color:var(--acc)}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap}.chip{padding:6px 12px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:#3d3d5c;transition:all .15s;white-space:nowrap}
+.chip:hover{border-color:var(--acc);color:var(--acc)}.chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}.cnt{border-radius:100px;padding:1px 6px;font-size:10px;margin-left:3px;background:rgba(255,255,255,.3)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;padding:1.25rem 2rem;max-width:1400px;margin:0 auto}
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .15s;animation:up .35s ease both}
+.card:hover{box-shadow:0 6px 24px rgba(79,70,229,.1);transform:translateY(-2px)}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ct{padding:1rem 1rem .75rem;border-bottom:1px solid var(--border);display:flex;gap:.75rem;align-items:flex-start}
+.ci{width:36px;height:36px;border-radius:8px;background:rgba(79,70,229,.08);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cc{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);margin-bottom:3px}
+.ct-t{font-size:13px;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cb{padding:.75rem 1rem;flex:1;display:flex;flex-direction:column;gap:.4rem}.mr{display:flex;align-items:center;gap:.35rem;font-size:12px;color:#3d3d5c}
+.pill{padding:2px 8px;border-radius:100px;font-size:11px;font-weight:500}.ok{background:#ecfdf5;color:var(--green)}.soon{background:#fffbeb;color:var(--amber)}.exp{background:#fef2f2;color:var(--red)}.nd{background:#f3f4f6;color:var(--muted)}
+.rl-a{background:#fef2f2;color:var(--red)}.rl-m{background:#fffbeb;color:var(--amber)}.rl-b{background:#f3f4f6;color:var(--muted)}
+.cf{padding:.6rem 1rem .9rem;display:flex;align-items:center;justify-content:space-between}
+.ft{font-size:10px;color:var(--muted);background:var(--surface);padding:2px 7px;border-radius:4px;border:1px solid var(--border);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:var(--ink);color:#fff;text-decoration:none;border-radius:7px;font-size:12px;font-weight:500;transition:background .15s}.btn:hover{background:var(--acc)}
+.empty{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);font-size:15px}
+.sp{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;padding:1.5rem;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:1.5rem}
+@media(max-width:600px){.hero{padding:1.5rem 1rem}.grid{padding:.75rem;grid-template-columns:1fr}.toolbar{padding:.75rem 1rem}.stats{gap:1rem}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo"><div class="badge">G</div><div><div class="lt">G.I. Finance</div><div class="ls">Monitor Bandi</div></div></div>
+<div class="live"><div class="dot"></div><span>Aggiornamento ore 7:00</span></div>
+</header>
+<div class="hero">
+<h1>Bandi aperti in<br><em>Lombardia</em></h1>
+<p>Regione &bull; Camere di Commercio &bull; MIMIT &mdash; aggiornato ogni mattina</p>
+<div class="stats">
+<div class="stat"><div class="sn" id="st">&mdash;</div><div class="sl">Totali</div></div>
+<div class="sdiv"></div>
+<div class="stat"><div class="sn" id="sa">&mdash;</div><div class="sl">Aperti</div></div>
+<div class="sdiv"></div>
+<div class="stat"><div class="sn" id="so">&mdash;</div><div class="sl">Alta priorit&agrave;</div></div>
+</div>
+</div>
+<div class="toolbar">
+<input class="search" id="q" placeholder="Cerca bando, ente, categoria...">
+<div class="chips" id="chips">
+<div class="chip on" data-f="tutti">Tutti <span class="cnt" id="tc">0</span></div>
+<div class="chip" data-f="alta">&#128308; Alta priorit&agrave;</div>
+<div class="chip" data-f="scadenza">&#9888;&#65039; Scadenza vicina</div>
+<div class="chip" data-f="regione">Regione Lombardia</div>
+<div class="chip" data-f="camera">Camere di Commercio</div>
+<div class="chip" data-f="mimit">MIMIT</div>
+</div>
+</div>
+<div class="grid" id="grid"><div class="empty"><div class="sp"></div><p>Caricamento bandi...</p></div></div>
+<footer>G.I. Finance Srl &mdash; Via Roma 78, 23900 Lecco &nbsp;|&nbsp; Finanza &amp; Tesoreria Aziendale</footer>
+<script>
+var U='https://vlwvpnvsjwricmtoymlp.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsd3ZwbnZzandyaWNtdG95bWxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTM0NDMsImV4cCI6MjA5MjM2OTQ0M30.r9xijyhPH4GNOnHUb1LipdjTR7m_Iq06LU99JjAlmIQ';
+var IC={imprese:'🏭',digitale:'💻',innovazione:'💡',formazione:'📚',sociale:'🤝',def:'📋'};
+var all=[],fil='tutti',q='';
+function ic(c){if(!c)return IC.def;var k=c.toLowerCase();var e=Object.entries(IC).find(function(x){return k.includes(x[0])});return e?e[1]:IC.def;}
+function sd(s){if(!s)return['N/D','nd'];var d=new Date(s),t=new Date();t.setHours(0,0,0,0);var df=Math.ceil((d-t)/864e5);if(df<0)return['Scaduto','exp'];if(df<=14)return[df+'gg','soon'];return[d.toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}),'ok'];}
+function card(b,i){var s=sd(b.scadenza),ri=b.rilevanza||'bassa',rc=ri==='alta'?'rl-a':ri==='media'?'rl-m':'rl-b',ri2=ri==='alta'?'🔴':ri==='media'?'🟡':'⚪';
+return '<div class="card" style="animation-delay:'+i*30+'ms"><div class="ct"><div class="ci">'+ic(b.categoria)+'</div><div style="flex:1;min-width:0"><div class="cc">'+(b.categoria||'Generale')+'</div><div class="ct-t">'+(b.titolo||b.url)+'</div></div></div><div class="cb"><div class="mr">🏛️ '+(b.ente||'N/D')+'</div><div class="mr">📅 <span class="pill '+s[1]+'">'+s[0]+'</span> &nbsp;<span class="pill '+rc+'">'+ri2+' '+ri.charAt(0).toUpperCase()+ri.slice(1)+'</span></div></div><div class="cf"><span class="ft">'+(b.fonte||'Lombardia')+'</span><a href="'+b.url+'" target="_blank" rel="noopener" class="btn">Apri &#8599;</a></div></div>';}
+function render(){var g=document.getElementById('grid'),r=all;
+if(q){var lq=q.toLowerCase();r=r.filter(function(b){return((b.titolo||'')+(b.categoria||'')+(b.ente||'')+(b.fonte||'')).toLowerCase().includes(lq);});}
+if(fil==='alta')r=r.filter(function(b){return b.rilevanza==='alta';});
+else if(fil==='scadenza'){var so=new Date();so.setDate(so.getDate()+14);r=r.filter(function(b){return b.scadenza&&new Date(b.scadenza)>=new Date()&&new Date(b.scadenza)<=so;});}
+else if(fil==='regione')r=r.filter(function(b){return(b.fonte||'').includes('Regione');});
+else if(fil==='camera')r=r.filter(function(b){return(b.fonte||'').toLowerCase().includes('camera');});
+else if(fil==='mimit')r=r.filter(function(b){return(b.fonte||'').toUpperCase().includes('MIMIT');});
+g.innerHTML=r.length?r.map(card).join(''):'<div class="empty">Nessun bando trovato.</div>';}
+function stats(){document.getElementById('st').textContent=all.length;document.getElementById('sa').textContent=all.filter(function(b){return!b.scadenza||new Date(b.scadenza)>=new Date();}).length;document.getElementById('so').textContent=all.filter(function(b){return b.rilevanza==='alta';}).length;document.getElementById('tc').textContent=all.length;}
+async function load(){try{var r=await fetch(U+'/rest/v1/bandi?select=*&order=created_at.desc',{headers:{'apikey':K,'Authorization':'Bearer '+K}});all=await r.json();if(!Array.isArray(all))all=[];stats();render();}catch(e){document.getElementById('grid').innerHTML='<div class="empty">Errore caricamento.</div>';}}
+document.getElementById('q').addEventListener('input',function(e){q=e.target.value;render();});
+document.getElementById('chips').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on');});c.classList.add('on');fil=c.dataset.f;render();});
+load();setInterval(load,300000);
+</script>
+</body>
+</html>
