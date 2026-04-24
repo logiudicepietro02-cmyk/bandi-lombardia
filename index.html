@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>G.I. Finance — Bandi Monitor</title>
+<title>G.I. Finance â Bandi Monitor</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -46,7 +46,7 @@ header{position:sticky;top:0;z-index:50;padding:0 2rem;height:60px;display:flex;
 .search input{width:100%;padding:10px 14px 10px 38px;background:var(--surf);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none;transition:border-color .15s,background .15s}
 .search input::placeholder{color:var(--muted)}
 .search input:focus{border-color:var(--acc);background:var(--surf2)}
-.search::before{content:"⌕";position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none}
+.search::before{content:"â";position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none}
 .chips{display:flex;gap:.4rem;flex-wrap:wrap}
 .chip{padding:7px 13px;border:1px solid var(--border);background:var(--surf);color:var(--text2);border-radius:100px;font-family:'Geist',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .chip:hover{border-color:var(--border2);color:var(--text);background:var(--surf2)}
@@ -87,12 +87,21 @@ header{position:sticky;top:0;z-index:50;padding:0 2rem;height:60px;display:flex;
 .p-alta{background:var(--rose-bg);color:var(--rose);border:1px solid #fb718530;font-weight:600}
 .p-media{background:var(--amber-bg);color:var(--amber);border:1px solid #fbbf2430}
 .p-bassa{background:var(--surf2);color:var(--muted);border:1px solid var(--border2)}
-.docs{padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border)}
-.docs-h{font-family:'JetBrains Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.docs-h b{color:var(--text);font-weight:600}
-.doc-item{display:flex;align-items:center;gap:7px;padding:5px 8px;margin:0 -8px;font-size:11.5px;color:var(--text2);text-decoration:none;transition:all .12s;border-radius:6px;word-break:break-word;line-height:1.35}
-.doc-item:hover{color:var(--text);background:var(--surf2)}
-.doc-icon{flex-shrink:0;font-size:12px;opacity:.8}
+details.docs{background:var(--bg2);border-top:1px solid var(--border)}
+details.docs[open]{background:var(--surf2)}
+details.docs summary{list-style:none;padding:10px 16px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);display:flex;align-items:center;gap:8px;user-select:none;transition:color .12s}
+details.docs summary::-webkit-details-marker{display:none}
+details.docs summary:hover{color:var(--text2)}
+details.docs[open] summary{color:var(--text);border-bottom:1px solid var(--border)}
+.docs-ic{font-size:12px;opacity:.9}
+.docs-t{flex:1}
+.docs-t b{color:var(--text);font-weight:600;margin-left:4px}
+.docs-chev{width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .2s cubic-bezier(.4,0,.2,1);opacity:.7}
+details.docs[open] .docs-chev{transform:rotate(45deg)}
+.docs-body{padding:10px 16px 12px;display:flex;flex-direction:column;gap:2px}
+.doc-item{display:flex;align-items:center;gap:8px;padding:6px 8px;margin:0 -8px;font-size:11.5px;color:var(--text2);text-decoration:none;transition:all .12s;border-radius:6px;word-break:break-word;line-height:1.35}
+.doc-item:hover{color:var(--text);background:var(--bg)}
+.doc-icon{flex-shrink:0;font-size:12px;opacity:.7}
 .cf{padding:10px 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--border)}
 .ft{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:170px}
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;background:var(--text);color:var(--bg);text-decoration:none;border-radius:8px;font-size:12px;font-weight:600;transition:all .15s;white-space:nowrap;letter-spacing:-.005em}
@@ -119,12 +128,12 @@ footer{padding:1.2rem 1rem}
 <header>
 <div class="logo">
 <div class="mono">G</div>
-<div class="brand"><span class="bn">G.I. Finance</span><span class="bs">Bandi · Monitor</span></div>
+<div class="brand"><span class="bn">G.I. Finance</span><span class="bs">Bandi Â· Monitor</span></div>
 </div>
-<div class="tag-live"><span>Auto · 07:00</span></div>
+<div class="tag-live"><span>Auto Â· 07:00</span></div>
 </header>
 <section class="hero">
-<div class="hero-kicker"><b>&#9679; LIVE</b> Regione · CCIAA · MIMIT</div>
+<div class="hero-kicker"><b>&#9679; LIVE</b> Regione Â· CCIAA Â· MIMIT</div>
 <h1>Finanza agevolata,<br><em>gi&agrave; filtrata.</em></h1>
 <p>Ogni mattina il sistema raccoglie, arricchisce e ordina i bandi attivi in Lombardia per priorit&agrave; e scadenza. Descrizioni e documenti pronti da proporre al cliente.</p>
 <div class="stats">
@@ -134,7 +143,7 @@ footer{padding:1.2rem 1rem}
 </div>
 </section>
 <nav class="toolbar">
-<div class="search"><input id="q" placeholder="Cerca bando, ente, categoria…"></div>
+<div class="search"><input id="q" placeholder="Cerca bando, ente, categoriaâ¦"></div>
 <div class="chips" id="chips">
 <div class="chip on" data-f="tutti">Tutti <span class="cnt" id="tc">0</span></div>
 <div class="chip" data-f="alta">&#9679; Priorit&agrave; alta</div>
@@ -145,21 +154,21 @@ footer{padding:1.2rem 1rem}
 <div class="chip" data-f="mimit">MIMIT</div>
 </div>
 </nav>
-<main id="container"><div class="grid"><div class="empty"><div class="sp"></div>Caricamento bandi…</div></div></main>
+<main id="container"><div class="grid"><div class="empty"><div class="sp"></div>Caricamento bandiâ¦</div></div></main>
 <footer>
 <span>G.I. Finance Srl &middot; Via Roma 78 &middot; 23900 Lecco</span>
 <span class="built">BUILT WITH CARE &middot; 2026</span>
 </footer>
 <script>
 var U='https://vlwvpnvsjwricmtoymlp.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsd3ZwbnZzandyaWNtdG95bWxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTM0NDMsImV4cCI6MjA5MjM2OTQ0M30.r9xijyhPH4GNOnHUb1LipdjTR7m_Iq06LU99JjAlmIQ';
-var IC={imprese:'🏭',digitale:'💻',innovazione:'💡',formazione:'📚',sociale:'🤝',agricoltura:'🌾',ambiente:'🌿',cultura:'🎨',ricerca:'🧪',internazionali:'🌍',def:'◆'};
+var IC={imprese:'ð­',digitale:'ð»',innovazione:'ð¡',formazione:'ð',sociale:'ð¤',agricoltura:'ð¾',ambiente:'ð¿',cultura:'ð¨',ricerca:'ð§ª',internazionali:'ð',def:'â'};
 var all=[],fil='tutti',q='',expanded={};
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
 function ic(c){if(!c)return IC.def;var k=c.toLowerCase();var e=Object.entries(IC).find(function(x){return k.includes(x[0]);});return e?e[1]:IC.def;}
 function sd(s){if(!s)return['N/D','p-nd',null];var d=new Date(s),t=new Date();t.setHours(0,0,0,0);var df=Math.ceil((d-t)/864e5);if(df<0)return['Scaduto','p-exp',df];if(df<=14)return[df+' giorni','p-soon',df];return[d.toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}),'p-ok',df];}
 function rlBadge(r){r=r||'bassa';return '<span class="pill p-'+r+'">&#9679; '+r.charAt(0).toUpperCase()+r.slice(1)+'</span>';}
-function docIcon(n){n=(n||'').toLowerCase();if(n.includes('.pdf'))return '▤';if(n.includes('.doc'))return '✎';if(n.includes('.xls'))return '≣';if(n.includes('.zip'))return '▣';return '□';}
-function docs(alls){if(!alls||!alls.length)return '';var items=alls.slice(0,5).map(function(a){return '<a class="doc-item" href="'+esc(a.url)+'" target="_blank" rel="noopener"><span class="doc-icon">'+docIcon(a.nome)+'</span>'+esc(a.nome)+'</a>';}).join('');var more=alls.length>5?'<div style="font-size:10.5px;color:var(--muted);margin-top:6px;font-family:JetBrains Mono,monospace">+'+(alls.length-5)+' altri</div>':'';return '<div class="docs"><div class="docs-h">📎 Documenti <b>'+alls.length+'</b></div>'+items+more+'</div>';}
+function docIcon(n){n=(n||'').toLowerCase();if(n.includes('.pdf'))return 'â¤';if(n.includes('.doc'))return 'â';if(n.includes('.xls'))return 'â£';if(n.includes('.zip'))return 'â£';return 'â¡';}
+function docs(alls){if(!alls||!alls.length)return '';var items=alls.slice(0,8).map(function(a){return '<a class="doc-item" href="'+esc(a.url)+'" target="_blank" rel="noopener"><span class="doc-icon">'+docIcon(a.nome)+'</span>'+esc(a.nome)+'</a>';}).join('');var more=alls.length>8?'<div style="font-size:10.5px;color:var(--muted);margin-top:6px;font-family:JetBrains Mono,monospace;padding-left:8px">+'+(alls.length-8)+' altri</div>':'';return '<details class="docs"><summary><span class="docs-ic">📎</span><span class="docs-t">Documenti<b>'+alls.length+'</b></span><span class="docs-chev"></span></summary><div class="docs-body">'+items+more+'</div></details>';}
 function isNew(b){if(!b.created_at)return false;return (Date.now()-new Date(b.created_at).getTime())<36e5*36;}
 function card(b,i){
 var s=sd(b.scadenza);
@@ -205,9 +214,9 @@ var scaduti=r.filter(function(b){return b.scadenza&&new Date(b.scadenza).getTime
 var hAlta=attivi.filter(function(b){return b.rilevanza==='alta';});
 var hMedia=attivi.filter(function(b){return b.rilevanza==='media';});
 var hBassa=attivi.filter(function(b){return b.rilevanza==='bassa';});
-function sec(title,arr,color){if(!arr.length)return '';return '<div class="sect"><div class="sect-h"><div class="sect-dot" style="background:'+color+'"></div><div class="sect-t">'+title+'</div><div class="sect-c">'+String(arr.length).padStart(2,'0')+' • bandi</div></div></div><div class="grid">'+arr.map(card).join('')+'</div>';}
+function sec(title,arr,color){if(!arr.length)return '';return '<div class="sect"><div class="sect-h"><div class="sect-dot" style="background:'+color+'"></div><div class="sect-t">'+title+'</div><div class="sect-c">'+String(arr.length).padStart(2,'0')+' â¢ bandi</div></div></div><div class="grid">'+arr.map(card).join('')+'</div>';}
 var html='';
-html+=sec('Priorità alta',hAlta,'var(--rose)');
+html+=sec('PrioritÃ  alta',hAlta,'var(--rose)');
 html+=sec('Agevolazioni',hMedia,'var(--amber)');
 html+=sec('Altri attivi',hBassa,'var(--text2)');
 if(scaduti.length)html+=sec('Recentemente chiusi',scaduti,'var(--muted)');
