@@ -897,94 +897,20 @@
 
 <script>
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const CACHE_KEY = 'bandi_cache_v4';
+const CACHE_KEY = 'bandi_cache_v5';
 const CACHE_TTL = 20 * 60 * 60 * 1000; // 20 hours
 const API_KEY_LS = 'gi_finance_apikey';
 
-const SOURCES = [
-  {
-    id: 'regione',
-    label: 'Regione Lombardia',
-    query: `Cerca i bandi e finanziamenti agevolati ATTIVI pubblicati da Regione Lombardia alla data odierna.
-Focus: bandi per PMI lombarde in settori innovazione, digitalizzazione, energia, artigianato, manifatturiero.
-Siti da cercare: bandi.regione.lombardia.it, finanza-agevolata.regione.lombardia.it`
-  },
-  {
-    id: 'cciaa',
-    label: 'Camere di Commercio',
-    query: `Cerca i bandi e contributi ATTIVI delle Camere di Commercio lombarde (CCIAA Milano, Como, Lecco, Bergamo, Brescia, Monza Brianza).
-Focus: voucher digitali, contributi per internazionalizzazione, formazione imprenditoriale, fiere, certificazioni.
-Siti da cercare: milomb.camcom.it, co.camcom.it, lc.camcom.it, bg.camcom.it`
-  },
-  {
-    id: 'mimit',
-    label: 'MIMIT',
-    query: `Cerca i bandi e incentivi ATTIVI del Ministero delle Imprese e del Made in Italy (MIMIT) alla data odierna.
-Focus: Industria 4.0, transizione 5.0, contratti di sviluppo, brevetti+, nuova Sabatini, PNRR.
-Sito: mimit.gov.it`
-  },
-  {
-    id: 'finlombarda',
-    label: 'Finlombarda',
-    query: `Cerca i prodotti finanziari, garanzie e bandi ATTIVI di Finlombarda alla data odierna.
-Focus: garanzie mutui PMI, finanziamenti agevolati, fondi di garanzia, finanza sostenibile.
-Sito: finlombarda.it`
-  },
-  {
-    id: 'inail',
-    label: 'INAIL',
-    query: `Cerca i bandi ISI INAIL ATTIVI e altri incentivi per sicurezza sul lavoro alla data odierna.
-Focus: Bandi ISI (Incentivi per la Sicurezza delle Imprese), contributi per prevenzione infortuni, DPI, macchinari sicuri.
-Sito: inail.it`
-  },
-  {
-    id: 'invitalia',
-    label: 'Invitalia',
-    query: `Cerca i bandi e incentivi ATTIVI di Invitalia (Agenzia nazionale per l'attrazione degli investimenti) alla data odierna.
-Focus: Resto al Sud, Smart&Start, Contratti di sviluppo, Cultura Crea, IPCEI, bandi per startup e PMI innovative.
-Sito: invitalia.it`
-  },
-  {
-    id: 'simest',
-    label: 'Simest',
-    query: `Cerca i fondi, finanziamenti e bandi ATTIVI di Simest (per internazionalizzazione PMI italiane) alla data odierna.
-Focus: Fondo 394 per export, digitalizzazione PMI export, fiere internazionali, e-commerce estero, transizione verde.
-Sito: simest.it`
-  }
+// Tutti i prompt per le 7 fonti — usati in una singola chiamata combinata
+const SOURCES_INFO = [
+  { id: 'regione',     label: 'Regione Lombardia' },
+  { id: 'cciaa',       label: 'Camere di Commercio Lombardia' },
+  { id: 'mimit',       label: 'MIMIT' },
+  { id: 'finlombarda', label: 'Finlombarda' },
+  { id: 'inail',       label: 'INAIL' },
+  { id: 'invitalia',   label: 'Invitalia' },
+  { id: 'simest',      label: 'Simest' }
 ];
-
-const SYSTEM_PROMPT = `Sei un esperto di finanza agevolata italiana. Hai il compito di trovare i bandi e finanziamenti ATTIVI e pertinenti per un consulente fiscale/aziendale che assiste PMI lombarde.
-
-Il profilo dei beneficiari target è:
-- Piccole e medie imprese lombarde (manifatturiero, artigianato, servizi, commercio)
-- Startup innovative
-- Professionisti e studi di consulenza
-- Settori: macchinari, metalmeccanico, legno/arredo, tessile, agroalimentare, ICT, servizi
-
-Cerca i bandi richiesti usando il web search e per ognuno restituisci ESCLUSIVAMENTE un JSON valido, senza altro testo, nella seguente struttura:
-
-{
-  "bandi": [
-    {
-      "titolo": "Nome esatto del bando",
-      "ente": "Nome ente erogatore",
-      "fonte": "ID della fonte (es: regione/cciaa/mimit/finlombarda/inail/invitalia/simest)",
-      "scadenza": "DD/MM/YYYY oppure 'A sportello' oppure 'Esaurimento fondi'",
-      "importo_max": "es. € 200.000 oppure N.D.",
-      "beneficiari": "Chi può accedere (max 80 caratteri)",
-      "oggetto": "Cosa finanzia (max 120 caratteri)",
-      "priorita": 1,
-      "url": "URL diretto al bando",
-      "documenti": [
-        {"nome": "Nome documento", "url": "URL"}
-      ]
-    }
-  ]
-}
-
-La priorità è: 1=alta (scadenza <30gg o importi elevati o molto rilevante), 2=media, 3=bassa.
-Se non trovi bandi attivi o scade prima di oggi, NON includerlo.
-RISPOSTA: solo JSON, nessun testo prima o dopo.`;
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allBandi = [];
@@ -1018,10 +944,10 @@ async function init() {
   if (cached) {
     allBandi = cached.bandi;
     renderAll();
-    const age = Date.now() - cached.ts;
-    const ageH = Math.round(age / 3600000);
+    const ageH = Math.round((Date.now() - cached.ts) / 3600000);
     document.getElementById('lastUpdate').textContent =
-      `Dati aggiornati ${ageH === 0 ? 'meno di un\'ora fa' : `${ageH}h fa`} · ${new Date(cached.ts).toLocaleString('it-IT')}`;
+      'Dati aggiornati ' + (ageH === 0 ? "meno di un'ora fa" : ageH + 'h fa') +
+      ' · ' + new Date(cached.ts).toLocaleString('it-IT');
     checkAutoRefresh(cached.ts);
   } else {
     await runSearch();
@@ -1030,11 +956,8 @@ async function init() {
 
 function checkAutoRefresh(ts) {
   const now = new Date();
-  const last = new Date(ts);
   const today7am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0);
-  if (now >= today7am && last < today7am) {
-    runSearch();
-  }
+  if (now >= today7am && new Date(ts) < today7am) runSearch();
 }
 
 // ─── SEARCH ──────────────────────────────────────────────────────────────────
@@ -1048,99 +971,110 @@ async function runSearch() {
   document.getElementById('errorBanner').style.display = 'none';
 
   const grid = document.getElementById('cardsGrid');
-  grid.innerHTML = `<div class="loading-state" style="grid-column:1/-1">
-    <div class="spinner"></div>
-    <div style="font-family:var(--font-mono);font-size:13px;color:var(--text-muted)">Ricerca bandi in corso...</div>
-    <div class="loading-source" id="loadingSource">Inizializzazione</div>
-    <div class="loading-progress"><div class="loading-bar" id="loadingBar" style="width:0%"></div></div>
-  </div>`;
+  grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1">' +
+    '<div class="spinner"></div>' +
+    '<div style="font-family:var(--font-mono);font-size:13px;color:var(--text-muted)">Analisi bandi in corso...</div>' +
+    '<div class="loading-source" id="loadingSource">Contatto API...</div>' +
+    '<div class="loading-progress"><div class="loading-bar" id="loadingBar" style="width:5%"></div></div>' +
+    '</div>';
 
   allBandi = [];
-  const results = [];
 
-  for (let i = 0; i < SOURCES.length; i++) {
-    const src = SOURCES[i];
-    const pct = Math.round((i / SOURCES.length) * 100);
-    document.getElementById('loadingSource').textContent = `Cercando: ${src.label}`;
-    document.getElementById('loadingBar').style.width = pct + '%';
+  try {
+    const today = new Date().toLocaleDateString('it-IT', {day:'2-digit',month:'2-digit',year:'numeric'});
 
-    try {
-      const bandi = await searchSource(apiKey, src);
-      results.push(...bandi);
-    } catch (e) {
-      console.error(`Errore fonte ${src.id}:`, e);
-      showError(`⚠ Errore su ${src.label}: ${e.message}`);
+    // Prompt che chiede tutte e 7 le fonti in una sola chiamata
+    const userMsg = 'Data di oggi: ' + today + '\n\n' +
+      'Elenca tutti i bandi e finanziamenti agevolati ATTIVI o periodicamente disponibili per le seguenti 7 fonti:\n' +
+      '1. Regione Lombardia (fonte: regione) — bandi PMI: innovazione, digitale, energia, manifattura\n' +
+      '2. Camere di Commercio lombarde (fonte: cciaa) — voucher, contributi fiere, internazionalizzazione\n' +
+      '3. MIMIT (fonte: mimit) — Transizione 5.0, Nuova Sabatini, Brevetti+, Contratti di sviluppo\n' +
+      '4. Finlombarda (fonte: finlombarda) — garanzie, mutui PMI, fondi rotativi\n' +
+      '5. INAIL (fonte: inail) — Bandi ISI sicurezza, prevenzione infortuni\n' +
+      '6. Invitalia (fonte: invitalia) — Smart&Start, Resto al Sud, Contratti sviluppo\n' +
+      '7. Simest (fonte: simest) — Fondo 394 export, digitalizzazione estera, fiere internazionali\n\n' +
+      'Per ogni fonte includi almeno 2-3 bandi/strumenti rilevanti per PMI lombarde.\n' +
+      'RISPOSTA: solo JSON puro, nessun testo fuori dal JSON, nessun backtick, nessun markdown.';
+
+    document.getElementById('loadingBar').style.width = '30%';
+    document.getElementById('loadingSource').textContent = 'Elaborazione 7 fonti...';
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 8000,
+        system: 'Sei un esperto di finanza agevolata italiana. Rispondi SOLO con JSON valido, senza testo prima o dopo, senza backtick, senza markdown. Il JSON deve avere questa struttura: {"bandi": [{"titolo": "string", "ente": "string", "fonte": "string (regione/cciaa/mimit/finlombarda/inail/invitalia/simest)", "scadenza": "DD/MM/YYYY o A sportello o Periodico", "importo_max": "string", "beneficiari": "string max 80 char", "oggetto": "string max 120 char", "priorita": 1, "url": "string url reale", "documenti": []}]}. priorita: 1=alta, 2=media, 3=bassa.',
+        messages: [{ role: 'user', content: userMsg }]
+      })
+    });
+
+    document.getElementById('loadingBar').style.width = '80%';
+
+    if (!resp.ok) {
+      const errRaw = await resp.text();
+      let errMsg = 'Errore API ' + resp.status;
+      try { errMsg = JSON.parse(errRaw)?.error?.message || errMsg; } catch(e) {}
+      throw new Error(errMsg);
     }
-  }
 
-  document.getElementById('loadingBar').style.width = '100%';
+    const data = await resp.json();
+    document.getElementById('loadingBar').style.width = '95%';
 
-  allBandi = results;
+    // Estrai testo dalla risposta
+    const textContent = (data.content || [])
+      .filter(b => b.type === 'text')
+      .map(b => b.text)
+      .join('');
 
-  if (allBandi.length === 0) {
-    showError('Nessun bando trovato o errore di rete. Controlla la chiave API e riprova.');
-    grid.innerHTML = '<div class="empty-state">Nessun risultato. Premi Aggiorna per riprovare.</div>';
-  } else {
+    if (!textContent.trim()) {
+      throw new Error('Risposta vuota dall\'API. Verifica la chiave e riprova.');
+    }
+
+    // Pulisci e parsa JSON
+    let jsonStr = textContent.trim();
+    // Rimuovi possibili backtick markdown
+    jsonStr = jsonStr.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+    // Trova il JSON object
+    const start = jsonStr.indexOf('{');
+    const end = jsonStr.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('Nessun JSON trovato nella risposta.');
+    jsonStr = jsonStr.slice(start, end + 1);
+
+    const parsed = JSON.parse(jsonStr);
+    allBandi = (parsed.bandi || []).map(b => ({
+      ...b,
+      fonte_label: (SOURCES_INFO.find(s => s.id === b.fonte) || { label: b.fonte }).label
+    }));
+
+    document.getElementById('loadingBar').style.width = '100%';
+
+    if (allBandi.length === 0) {
+      throw new Error('Nessun bando trovato nel risultato. Riprova.');
+    }
+
     setCache(allBandi);
     renderAll();
     document.getElementById('lastUpdate').textContent =
-      `Aggiornato ora · ${new Date().toLocaleString('it-IT')}`;
+      'Aggiornato ora · ' + new Date().toLocaleString('it-IT');
+
+  } catch (err) {
+    console.error('Errore runSearch:', err);
+    showError('⚠ ' + err.message);
+    grid.innerHTML = '<div class="empty-state" style="flex-direction:column;gap:12px">' +
+      '<div>Errore durante la ricerca.</div>' +
+      '<button onclick="runSearch()" style="background:var(--gold);color:#000;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:12px">↻ Riprova</button>' +
+      '</div>';
   }
 
   btn.disabled = false;
   btn.textContent = '↻ Aggiorna';
-}
-
-async function searchSource(apiKey, src) {
-  const today = new Date().toLocaleDateString('it-IT');
-  const userPrompt = `Data di oggi: ${today}\n\n${src.query}\n\nRicorda: risposta SOLO JSON, nessun testo extra.`;
-
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-beta': 'web-search-2025-03-05'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 4000,
-      system: SYSTEM_PROMPT,
-      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-      messages: [{ role: 'user', content: userPrompt }]
-    })
-  });
-
-  if (!resp.ok) {
-    const errText = await resp.text();
-    let errMsg = `Errore API ${resp.status}`;
-    try {
-      const errJson = JSON.parse(errText);
-      errMsg = errJson?.error?.message || errMsg;
-    } catch {}
-    throw new Error(errMsg);
-  }
-
-  const data = await resp.json();
-
-  // Extract all text blocks from response (including after tool use)
-  const textBlocks = data.content.filter(b => b.type === 'text');
-  const fullText = textBlocks.map(b => b.text).join('');
-
-  if (!fullText.trim()) return [];
-
-  // Parse JSON - handle possible markdown code blocks
-  let jsonStr = fullText.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
-  const jsonMatch = jsonStr.match(/\{[\s\S]*"bandi"[\s\S]*\}/);
-  if (!jsonMatch) return [];
-
-  const parsed = JSON.parse(jsonMatch[0]);
-  return (parsed.bandi || []).map(b => ({
-    ...b,
-    fonte: src.id,
-    fonte_label: src.label
-  }));
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
@@ -1153,7 +1087,6 @@ function renderCards() {
   const query = document.getElementById('searchInput').value.toLowerCase();
   let bandi = [...allBandi];
 
-  // Text search
   if (query) {
     bandi = bandi.filter(b =>
       (b.titolo||'').toLowerCase().includes(query) ||
@@ -1163,121 +1096,90 @@ function renderCards() {
     );
   }
 
-  // Filter
-  if (activeFilter === 'alta') bandi = bandi.filter(b => b.priorita === 1);
-  if (activeFilter === 'scadenza') bandi = bandi.filter(b => isUrgent(b.scadenza));
+  if (activeFilter === 'alta')      bandi = bandi.filter(b => b.priorita === 1);
+  if (activeFilter === 'scadenza')  bandi = bandi.filter(b => isUrgent(b.scadenza));
   if (activeFilter === 'documenti') bandi = bandi.filter(b => b.documenti && b.documenti.length > 0);
+  if (activeSource !== 'tutte')     bandi = bandi.filter(b => b.fonte === activeSource);
 
-  // Source
-  if (activeSource !== 'tutte') bandi = bandi.filter(b => b.fonte === activeSource);
-
-  // Sort
   bandi = sortBandi(bandi, activeSort);
 
   const grid = document.getElementById('cardsGrid');
   if (bandi.length === 0) {
-    grid.innerHTML = '<div class="empty-state">Nessun bando corrisponde ai filtri selezionati.</div>';
+    grid.innerHTML = '<div class="empty-state">Nessun bando corrisponde ai filtri.</div>';
     return;
   }
-
-  grid.innerHTML = bandi.map(b => cardHTML(b)).join('');
+  grid.innerHTML = bandi.map(cardHTML).join('');
 }
 
 function cardHTML(b) {
   const pClass = b.priorita === 1 ? 'p-alta' : b.priorita === 2 ? 'p-media' : 'p-bassa';
-  const pLabel = b.priorita === 1 ? '!' : b.priorita === 2 ? '·' : '·';
   const urgent = isUrgent(b.scadenza);
   const hasDocs = b.documenti && b.documenti.length > 0;
-
   const docsHTML = hasDocs
-    ? b.documenti.map(d =>
-        `<a class="doc-item" href="${escHtml(d.url)}" target="_blank" rel="noopener">
-          <span class="doc-icon">📄</span>
-          <span>${escHtml(d.nome)}</span>
-        </a>`
-      ).join('')
+    ? b.documenti.map(d => '<a class="doc-item" href="' + escHtml(d.url) + '" target="_blank" rel="noopener"><span class="doc-icon">📄</span><span>' + escHtml(d.nome) + '</span></a>').join('')
     : '<span style="font-size:12px;color:var(--text-dim);font-family:var(--font-mono)">Nessun documento allegato</span>';
 
-  return `
-<div class="bando-card" data-source="${escHtml(b.fonte)}" onclick="toggleCard(this)">
-  <div class="card-header">
-    <span class="card-source-badge badge-${escHtml(b.fonte)}">${escHtml(b.fonte_label || b.fonte)}</span>
-    <div class="card-title">${escHtml(b.titolo)}</div>
-    <div class="priority-badge ${pClass}" title="Priorità ${b.priorita}">${pLabel}</div>
-  </div>
-
-  <div class="card-meta">
-    <span class="meta-chip ${urgent ? 'scadenza-urgente' : ''}">
-      📅 ${escHtml(b.scadenza || 'N.D.')}
-    </span>
-    ${b.importo_max && b.importo_max !== 'N.D.' ? `<span class="meta-chip importo">💶 ${escHtml(b.importo_max)}</span>` : ''}
-  </div>
-
-  <div class="card-desc">${escHtml(b.oggetto)}</div>
-
-  <div class="card-footer">
-    <a class="card-link" href="${escHtml(b.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-      Scheda bando ↗
-    </a>
-    <button class="docs-btn ${hasDocs ? 'has-docs' : ''}" onclick="event.stopPropagation();toggleCard(this.closest('.bando-card'))">
-      📎 ${hasDocs ? b.documenti.length + ' doc' : 'Nessun doc'}
-    </button>
-  </div>
-
-  <div class="card-expanded">
-    <div class="beneficiari-row">
-      <div class="beneficiari-label">Beneficiari</div>
-      <div class="beneficiari-text">${escHtml(b.beneficiari || 'N.D.')}</div>
-    </div>
-    <div class="beneficiari-label" style="margin-top:10px;margin-bottom:4px">Documenti</div>
-    <div class="docs-list">${docsHTML}</div>
-  </div>
-</div>`;
+  return '<div class="bando-card" data-source="' + escHtml(b.fonte) + '" onclick="toggleCard(this)">' +
+    '<div class="card-header">' +
+      '<span class="card-source-badge badge-' + escHtml(b.fonte) + '">' + escHtml(b.fonte_label || b.fonte) + '</span>' +
+      '<div class="card-title">' + escHtml(b.titolo) + '</div>' +
+      '<div class="priority-badge ' + pClass + '">' + (b.priorita === 1 ? '!' : '·') + '</div>' +
+    '</div>' +
+    '<div class="card-meta">' +
+      '<span class="meta-chip ' + (urgent ? 'scadenza-urgente' : '') + '">📅 ' + escHtml(b.scadenza || 'N.D.') + '</span>' +
+      (b.importo_max && b.importo_max !== 'N.D.' ? '<span class="meta-chip importo">💶 ' + escHtml(b.importo_max) + '</span>' : '') +
+    '</div>' +
+    '<div class="card-desc">' + escHtml(b.oggetto) + '</div>' +
+    '<div class="card-footer">' +
+      '<a class="card-link" href="' + escHtml(b.url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Scheda bando ↗</a>' +
+      '<button class="docs-btn ' + (hasDocs ? 'has-docs' : '') + '" onclick="event.stopPropagation();toggleCard(this.closest(\'.bando-card\'))">📎 ' + (hasDocs ? b.documenti.length + ' doc' : 'Dettagli') + '</button>' +
+    '</div>' +
+    '<div class="card-expanded">' +
+      '<div class="beneficiari-row"><div class="beneficiari-label">Beneficiari</div><div class="beneficiari-text">' + escHtml(b.beneficiari || 'N.D.') + '</div></div>' +
+      '<div class="beneficiari-label" style="margin-top:10px;margin-bottom:4px">Documenti</div>' +
+      '<div class="docs-list">' + docsHTML + '</div>' +
+    '</div>' +
+  '</div>';
 }
 
-function toggleCard(card) {
-  card.classList.toggle('expanded');
-}
+function toggleCard(card) { card.classList.toggle('expanded'); }
 
 // ─── COUNTS ──────────────────────────────────────────────────────────────────
 function updateCounts() {
   const total = allBandi.length;
-  const alta = allBandi.filter(b => b.priorita === 1).length;
-  const scad = allBandi.filter(b => isUrgent(b.scadenza)).length;
-  const docs = allBandi.filter(b => b.documenti && b.documenti.length > 0).length;
+  const alta  = allBandi.filter(b => b.priorita === 1).length;
+  const scad  = allBandi.filter(b => isUrgent(b.scadenza)).length;
+  const docs  = allBandi.filter(b => b.documenti && b.documenti.length > 0).length;
 
-  document.getElementById('cnt-all').textContent = total;
-  document.getElementById('cnt-alta').textContent = alta;
-  document.getElementById('cnt-scad').textContent = scad;
-  document.getElementById('cnt-docs').textContent = docs;
+  document.getElementById('cnt-all').textContent   = total;
+  document.getElementById('cnt-alta').textContent  = alta;
+  document.getElementById('cnt-scad').textContent  = scad;
+  document.getElementById('cnt-docs').textContent  = docs;
+  document.getElementById('hdrTotal').textContent  = total;
+  document.getElementById('hdrAlta').textContent   = alta;
+  document.getElementById('hdrScad').textContent   = scad;
+  document.getElementById('scnt-all').textContent  = total;
 
-  document.getElementById('hdrTotal').textContent = total;
-  document.getElementById('hdrAlta').textContent = alta;
-  document.getElementById('hdrScad').textContent = scad;
-
-  document.getElementById('scnt-all').textContent = total;
-  SOURCES.forEach(src => {
+  SOURCES_INFO.forEach(src => {
     const cnt = allBandi.filter(b => b.fonte === src.id).length;
-    const el = document.getElementById(`scnt-${src.id}`);
+    const el = document.getElementById('scnt-' + src.id);
     if (el) el.textContent = cnt;
   });
 }
 
-// ─── FILTERS ─────────────────────────────────────────────────────────────────
+// ─── FILTERS / SORT ──────────────────────────────────────────────────────────
 function setFilter(f, btn) {
   activeFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderCards();
 }
-
 function setSource(s, btn) {
   activeSource = s;
   document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderCards();
 }
-
 function setSort(s, btn) {
   activeSort = s;
   document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
@@ -1285,35 +1187,28 @@ function setSort(s, btn) {
   renderCards();
 }
 
-// ─── SORT ────────────────────────────────────────────────────────────────────
-function sortBandi(bandi, sortKey) {
+function sortBandi(bandi, key) {
   return [...bandi].sort((a, b) => {
-    if (sortKey === 'priorita') return (a.priorita || 3) - (b.priorita || 3);
-    if (sortKey === 'scadenza') return parseDate(a.scadenza) - parseDate(b.scadenza);
-    if (sortKey === 'importo') return parseImporto(b.importo_max) - parseImporto(a.importo_max);
-    if (sortKey === 'fonte') return (a.fonte || '').localeCompare(b.fonte || '');
+    if (key === 'priorita') return (a.priorita||3) - (b.priorita||3);
+    if (key === 'scadenza') return parseDate(a.scadenza) - parseDate(b.scadenza);
+    if (key === 'importo')  return parseImporto(b.importo_max) - parseImporto(a.importo_max);
+    if (key === 'fonte')    return (a.fonte||'').localeCompare(b.fonte||'');
     return 0;
   });
 }
 
 function parseDate(d) {
-  if (!d || d === 'A sportello' || d === 'Esaurimento fondi') return 99999999;
-  const parts = d.split('/');
-  if (parts.length === 3) return parseInt(parts[2]+parts[1]+parts[0]);
-  return 99999999;
+  if (!d) return 99999999;
+  const p = d.split('/');
+  return p.length === 3 ? parseInt(p[2]+p[1]+p[0]) : 99999999;
 }
-
 function parseImporto(imp) {
-  if (!imp) return 0;
-  const n = imp.replace(/[^\d]/g, '');
-  return parseInt(n) || 0;
+  return parseInt((imp||'').replace(/[^\d]/g,'')) || 0;
 }
-
 function isUrgent(scadenza) {
-  if (!scadenza) return false;
-  const parts = scadenza.split('/');
-  if (parts.length !== 3) return false;
-  const d = new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]));
+  const p = (scadenza||'').split('/');
+  if (p.length !== 3) return false;
+  const d = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
   const diff = (d - Date.now()) / 86400000;
   return diff >= 0 && diff <= 14;
 }
@@ -1322,17 +1217,13 @@ function isUrgent(scadenza) {
 function setCache(bandi) {
   localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), bandi }));
 }
-
 function getCache() {
   try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const obj = JSON.parse(raw);
-    if (Date.now() - obj.ts > CACHE_TTL) return null;
+    const obj = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+    if (!obj || Date.now() - obj.ts > CACHE_TTL) return null;
     return obj;
   } catch { return null; }
 }
-
 function clearCache() {
   localStorage.removeItem(CACHE_KEY);
   location.reload();
@@ -1340,9 +1231,8 @@ function clearCache() {
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 function escHtml(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function showError(msg) {
   const el = document.getElementById('errorBanner');
   el.textContent = msg;
