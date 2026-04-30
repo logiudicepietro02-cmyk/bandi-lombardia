@@ -42,8 +42,7 @@
   .refresh-btn { margin-left: 12px; background: var(--gold); color: #000; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background .15s, transform .1s; }
   .refresh-btn:hover { background: #e8bc50; }
   .refresh-btn:active { transform: scale(.97); }
-  .refresh-btn:disabled { background: var(--surface2); color: var(--text-muted); cursor: not-allowed; }
-  .layout { max-width: 1600px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 220px 1fr; gap: 24px; min-height: calc(100vh - 56px); }
+  .refresh-btn:disabled { background: var(--surface2); color: var(--text-muted); cursor: not-allowed; }  .layout { max-width: 1600px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 220px 1fr; gap: 24px; min-height: calc(100vh - 56px); }
   .sidebar { padding: 20px 0; position: sticky; top: 76px; height: fit-content; }
   .sidebar-section { margin-bottom: 24px; }
   .sidebar-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; padding-left: 2px; }
@@ -85,8 +84,7 @@
   .meta-chip.scadenza-urgente { border-color: rgba(224,92,92,.3); color: var(--red); background: var(--red-dim); }
   .meta-chip.importo { border-color: rgba(212,168,67,.25); color: var(--gold); background: var(--gold-glow); }
   .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin-bottom: 10px; }
-  .card-footer { display: flex; align-items: center; gap: 8px; }
-  .card-link { font-family: var(--font-mono); font-size: 11px; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: opacity .15s; }
+  .card-footer { display: flex; align-items: center; gap: 8px; }  .card-link { font-family: var(--font-mono); font-size: 11px; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: opacity .15s; }
   .card-link:hover { opacity: .75; }
   .expand-btn { margin-left: auto; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); cursor: pointer; transition: all .15s; }
   .expand-btn:hover { border-color: var(--border2); color: var(--text); }
@@ -145,7 +143,6 @@
 </style>
 </head>
 <body>
-
 <div class="setup-overlay" id="setupOverlay">
   <div class="setup-card">
     <div class="setup-title">G.I. Finance <span style="color:var(--gold)">·</span> Setup</div>
@@ -165,7 +162,7 @@
       <div class="stat-pill">Alta priorità <strong id="hdrAlta">—</strong></div>
       <div class="stat-pill">Scad. &lt;14gg <strong id="hdrScad">—</strong></div>
     </div>
-    <button class="refresh-btn" id="refreshBtn" onclick="runSearch()">↻ Aggiorna</button>
+    <button class="refresh-btn" id="refreshBtn" onclick="runSearch()">&#8635; Aggiorna</button>
   </div>
 </header>
 
@@ -189,7 +186,7 @@
       <button class="source-btn" onclick="setSource('simest',this)"><span class="source-dot" style="background:var(--pink)"></span><span class="source-name">Simest</span><span class="source-count" id="scnt-simest">0</span></button>
     </div>
     <div style="margin-top:16px;padding:0 4px;">
-      <button onclick="clearCache()" style="background:none;border:none;color:var(--text-dim);font-family:var(--font-mono);font-size:10px;cursor:pointer;padding:0;">⊘ Svuota cache</button>
+      <button onclick="clearCache()" style="background:none;border:none;color:var(--text-dim);font-family:var(--font-mono);font-size:10px;cursor:pointer;padding:0;">⊜ Svuota cache</button>
     </div>
   </aside>
 
@@ -221,44 +218,14 @@
 </footer>
 
 <script>
-// ─── URL UFFICIALI VERIFICATI ─────────────────────────────────────────────────
-// Questi URL sono stati verificati manualmente. Claude NON genera URL.
 const SOURCE_URLS = {
-  regione: {
-    label: 'Regione Lombardia',
-    home: 'https://www.bandi.regione.lombardia.it/servizi/servizio/bandi',
-    search: 'https://www.bandi.regione.lombardia.it/servizi/servizio/bandi?tipo=PMI'
-  },
-  cciaa: {
-    label: 'Camere di Commercio',
-    home: 'https://www.milomb.camcom.it/contributi-e-finanziamenti',
-    search: 'https://www.milomb.camcom.it/contributi-e-finanziamenti'
-  },
-  mimit: {
-    label: 'MIMIT',
-    home: 'https://www.mimit.gov.it/it/incentivi',
-    search: 'https://www.mimit.gov.it/it/incentivi'
-  },
-  finlombarda: {
-    label: 'Finlombarda',
-    home: 'https://www.finlombarda.it/prodotti-e-servizi/prodotti-servizi/index',
-    search: 'https://www.finlombarda.it/prodotti-e-servizi/prodotti-servizi/index'
-  },
-  inail: {
-    label: 'INAIL',
-    home: 'https://www.inail.it/portale/prevenzione-e-sicurezza/it/prevenzione-e-sicurezza/finanziamenti-per-la-sicurezza/incentivi-alle-imprese.html',
-    bando_isi: 'https://www.inail.it/portale/prevenzione-e-sicurezza/it/prevenzione-e-sicurezza/finanziamenti-per-la-sicurezza/incentivi-alle-imprese/bando-isi-2025.html'
-  },
-  invitalia: {
-    label: 'Invitalia',
-    home: 'https://www.invitalia.it/cosa-facciamo/rafforziamo-le-imprese',
-    search: 'https://www.invitalia.it/cosa-facciamo/rafforziamo-le-imprese'
-  },
-  simest: {
-    label: 'Simest',
-    home: 'https://www.simest.it/strumenti-finanziari',
-    fondo394: 'https://www.simest.it/strumenti-finanziari/fondo-394'
-  }
+  regione: { label: 'Regione Lombardia', home: 'https://www.bandi.regione.lombardia.it/servizi/servizio/bandi', search: 'https://www.bandi.regione.lombardia.it/servizi/servizio/bandi?tipo=PMI' },
+  cciaa: { label: 'Camere di Commercio', home: 'https://www.milomb.camcom.it/contributi-e-finanziamenti' },
+  mimit: { label: 'MIMIT', home: 'https://www.mimit.gov.it/it/incentivi' },
+  finlombarda: { label: 'Finlombarda', home: 'https://www.finlombarda.it/prodotti-e-servizi/prodotti-servizi/index' },
+  inail: { label: 'INAIL', home: 'https://www.inail.it/portale/prevenzione-e-sicurezza/it/prevenzione-e-sicurezza/finanziamenti-per-la-sicurezza/incentivi-alle-imprese.html', bando_isi: 'https://www.inail.it/portale/prevenzione-e-sicurezza/it/prevenzione-e-sicurezza/finanziamenti-per-la-sicurezza/incentivi-alle-imprese/bando-isi-2025.html' },
+  invitalia: { label: 'Invitalia', home: 'https://www.invitalia.it/cosa-facciamo/rafforziamo-le-imprese' },
+  simest: { label: 'Simest', home: 'https://www.simest.it/strumenti-finanziari', fondo394: 'https://www.simest.it/strumenti-finanziari/fondo-394' }
 };
 
 const CACHE_KEY = 'bandi_cache_v6';
@@ -300,8 +267,7 @@ async function init() {
     allBandi = cached.bandi;
     renderAll();
     const ageH = Math.round((Date.now() - cached.ts) / 3600000);
-    document.getElementById('lastUpdate').textContent =
-      'Dati aggiornati ' + (ageH === 0 ? "meno di un'ora fa" : ageH + 'h fa') + ' · ' + new Date(cached.ts).toLocaleString('it-IT');
+    document.getElementById('lastUpdate').textContent = 'Dati aggiornati ' + (ageH === 0 ? "meno di un'ora fa" : ageH + 'h fa') + ' · ' + new Date(cached.ts).toLocaleString('it-IT');
     checkAutoRefresh(cached.ts);
   } else {
     await runSearch();
@@ -313,7 +279,6 @@ function checkAutoRefresh(ts) {
   const today7am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0);
   if (now >= today7am && new Date(ts) < today7am) runSearch();
 }
-
 const SYSTEM_PROMPT = `Sei un esperto di finanza agevolata italiana. Conosci perfettamente tutti i bandi attivi di Regione Lombardia, CCIAA lombarde, MIMIT, Finlombarda, INAIL, Invitalia e Simest.
 
 REGOLA ASSOLUTA SUGLI URL: NON generare URL. Il campo "url_key" deve contenere SOLO una chiave predefinita tra quelle elencate sotto. Il sistema applicherà automaticamente l'URL corretto e verificato.
@@ -322,7 +287,7 @@ Chiavi URL disponibili per ogni fonte:
 - regione: "home" o "search"
 - cciaa: "home"
 - mimit: "home"
-- finlombarda: "home"  
+- finlombarda: "home"
 - inail: "home" o "bando_isi"
 - invitalia: "home"
 - simest: "home" o "fondo394"
@@ -338,11 +303,11 @@ Struttura JSON:
       "fonte": "regione|cciaa|mimit|finlombarda|inail|invitalia|simest",
       "url_key": "home",
       "scadenza": "DD/MM/YYYY oppure A sportello oppure Periodico/annuale",
-      "importo_max": "es. € 130.000 oppure N.D.",
+      "importo_max": "es. \u20ac 130.000 oppure N.D.",
       "beneficiari": "Chi può accedere (max 80 caratteri)",
       "oggetto": "Cosa finanzia il bando (max 130 caratteri)",
       "priorita": 2,
-      "note_accesso": "Indicazioni pratiche su come accedere, dove fare domanda, eventuali scadenze imminenti (max 200 caratteri)"
+      "note_accesso": "Indicazioni pratiche su come accedere (max 200 caratteri)"
     }
   ]
 }
@@ -366,26 +331,12 @@ async function runSearch() {
 
   try {
     const today = new Date().toLocaleDateString('it-IT', {day:'2-digit', month:'2-digit', year:'numeric'});
-    const userMsg = 'Data di oggi: ' + today + '\n\n' +
-      'Elenca TUTTI i bandi e strumenti di finanziamento agevolato ATTIVI o ricorrenti per queste 7 fonti:\n\n' +
-      '1. REGIONE LOMBARDIA (fonte: regione)\n' +
-      '   Cerca: bandi PR FESR 2021-2027, voucher digitalizzazione, bandi energia, bandi innovazione, bandi manifattura, voucher internazionalizzazione, bandi occupazione\n\n' +
-      '2. CAMERE DI COMMERCIO LOMBARDE (fonte: cciaa)\n' +
-      '   Cerca: voucher digitali imprese, contributi fiere nazionali/internazionali, bandi formazione imprenditoriale, contributi brevetti/marchi, voucher manager innovazione\n\n' +
-      '3. MIMIT - Ministero Imprese Made in Italy (fonte: mimit)\n' +
-      '   Cerca: Transizione 5.0, Nuova Sabatini, Brevetti+, Marchi+, Disegni+, Contratti di sviluppo, IPCEI, credito imposta R&S, Fondo Garanzia PMI\n\n' +
-      '4. FINLOMBARDA (fonte: finlombarda)\n' +
-      '   Cerca: Linea Sviluppo Aziendale, Microcredito Lombardo, Rafforza&Innova, garanzie PMI, Agrifood Basket Bond, fondi di garanzia regionali\n\n' +
-      '5. INAIL (fonte: inail)\n' +
-      '   Cerca: Bando ISI 2025/2026 (ATTIVO - scadenza 28/05/2026), tutti gli assi di finanziamento ISI\n\n' +
-      '6. INVITALIA (fonte: invitalia)\n' +
-      '   Cerca: Smart&Start Italia, ON Nuove Imprese a Tasso Zero, Resto al Sud, Contratti di Sviluppo, Industria 4.0, Cultura Crea, Mediocredito Centrale\n\n' +
-      '7. SIMEST (fonte: simest)\n' +
-      '   Cerca: Fondo 394 Export, digitalizzazione PMI estero, partecipazione fiere internazionali, e-commerce internazionale, Temporary Export Manager\n\n' +
-      'Per ogni bando usa url_key tra quelle consentite. Non inventare URL. Includi tutti i bandi che conosci per ciascuna fonte.';
+    const userMsg = 'Data di oggi: ' + today + '\n\nElenca TUTTI i bandi e strumenti di finanziamento agevolato ATTIVI o ricorrenti per queste 7 fonti:\n\n1. REGIONE LOMBARDIA (fonte: regione)\n   Cerca: bandi PR FESR 2021-2027, voucher digitalizzazione, bandi energia, bandi innovazione, bandi manifattura, voucher internazionalizzazione, bandi occupazione\n\n2. CAMERE DI COMMERCIO LOMBARDE (fonte: cciaa)\n   Cerca: voucher digitali imprese, contributi fiere nazionali/internazionali, bandi formazione imprenditoriale, contributi brevetti/marchi, voucher manager innovazione\n\n3. MIMIT - Ministero Imprese Made in Italy (fonte: mimit)\n   Cerca: Transizione 5.0, Nuova Sabatini, Brevetti+, Marchi+, Disegni+, Contratti di sviluppo, IPCEI, credito imposta R&S, Fondo Garanzia PMI\n\n4. FINLOMBARDA (fonte: finlombarda)\n   Cerca: Linea Sviluppo Aziendale, Microcredito Lombardo, Rafforza&Innova, garanzie PMI, Agrifood Basket Bond, fondi di garanzia regionali\n\n5. INAIL (fonte: inail)\n   Cerca: Bando ISI 2025/2026 (ATTIVO - scadenza 28/05/2026), tutti gli assi di finanziamento ISI\n\n6. INVITALIA (fonte: invitalia)\n   Cerca: Smart&Start Italia, ON Nuove Imprese a Tasso Zero, Resto al Sud, Contratti di Sviluppo, Industria 4.0, Cultura Crea, Mediocredito Centrale\n\n7. SIMEST (fonte: simest)\n   Cerca: Fondo 394 Export, digitalizzazione PMI estero, partecipazione fiere internazionali, e-commerce internazionale, Temporary Export Manager\n\nPer ogni bando usa url_key tra quelle consentite. Non inventare URL. Includi tutti i bandi che conosci per ciascuna fonte.';
 
-    document.getElementById('loadingBar').style.width = '30%';
-    document.getElementById('loadingSource').textContent = 'Analisi 7 fonti istituzionali...';
+    const lb = () => document.getElementById('loadingBar');
+    const ls = () => document.getElementById('loadingSource');
+    if (lb()) lb().style.width = '30%';
+    if (ls()) ls().textContent = 'Analisi 7 fonti istituzionali...';
 
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -403,7 +354,7 @@ async function runSearch() {
       })
     });
 
-    document.getElementById('loadingBar').style.width = '80%';
+    if (lb()) lb().style.width = '80%';
 
     if (!resp.ok) {
       const errRaw = await resp.text();
@@ -413,7 +364,7 @@ async function runSearch() {
     }
 
     const data = await resp.json();
-    document.getElementById('loadingBar').style.width = '95%';
+    if (lb()) lb().style.width = '95%';
 
     const textContent = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
     if (!textContent.trim()) throw new Error('Risposta vuota. Verifica la chiave API e riprova.');
@@ -432,7 +383,7 @@ async function runSearch() {
       return { ...b, url: resolvedUrl, fonte_label: srcInfo.label };
     });
 
-    document.getElementById('loadingBar').style.width = '100%';
+    if (lb()) lb().style.width = '100%';
     if (allBandi.length === 0) throw new Error('Nessun bando trovato. Riprova.');
 
     setCache(allBandi);
@@ -473,14 +424,10 @@ function cardHTML(b) {
   const pClass = b.priorita === 1 ? 'p-alta' : b.priorita === 2 ? 'p-media' : 'p-bassa';
   const urgent = isUrgent(b.scadenza);
   const srcUrls = SOURCE_URLS[b.fonte] || {};
-
-  // Costruisci i link verificati
-  let linksHTML = '';
-  linksHTML += '<a class="source-link primary" href="' + escHtml(b.url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 Vai al bando ↗</a>';
+  let linksHTML = '<a class="source-link primary" href="' + escHtml(b.url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 Vai al bando ↗</a>';
   if (srcUrls.home && b.url !== srcUrls.home) {
     linksHTML += '<a class="source-link secondary" href="' + escHtml(srcUrls.home) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">📋 Tutti i bandi ' + escHtml(b.fonte_label) + ' ↗</a>';
   }
-
   return '<div class="bando-card" data-source="' + escHtml(b.fonte) + '" onclick="toggleCard(this)">' +
     '<div class="card-header">' +
       '<span class="card-source-badge badge-' + escHtml(b.fonte) + '">' + escHtml(b.fonte_label) + '</span>' +
@@ -494,7 +441,7 @@ function cardHTML(b) {
     '<div class="card-desc">' + escHtml(b.oggetto) + '</div>' +
     '<div class="card-footer">' +
       '<a class="card-link" href="' + escHtml(b.url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Vai al bando ↗</a>' +
-      '<button class="expand-btn" onclick="event.stopPropagation();toggleCard(this.closest(\'.bando-card\'))">Dettagli ▾</button>' +
+      '<button class="expand-btn" onclick="event.stopPropagation();toggleCard(this.closest(\'bando-card\'))">Dettagli ▾</button>' +
     '</div>' +
     '<div class="card-expanded">' +
       '<div class="detail-label">Beneficiari</div>' +
@@ -510,82 +457,24 @@ function cardHTML(b) {
 function toggleCard(card) { card.classList.toggle('expanded'); }
 
 function updateCounts() {
-  const total = allBandi.length;
-  const alta  = allBandi.filter(b => b.priorita === 1).length;
-  const scad  = allBandi.filter(b => isUrgent(b.scadenza)).length;
-  document.getElementById('cnt-all').textContent  = total;
-  document.getElementById('cnt-alta').textContent = alta;
-  document.getElementById('cnt-scad').textContent = scad;
-  document.getElementById('hdrTotal').textContent = total;
-  document.getElementById('hdrAlta').textContent  = alta;
-  document.getElementById('hdrScad').textContent  = scad;
-  document.getElementById('scnt-all').textContent = total;
-  SOURCES_INFO.forEach(src => {
-    const cnt = allBandi.filter(b => b.fonte === src.id).length;
-    const el = document.getElementById('scnt-' + src.id);
-    if (el) el.textContent = cnt;
-  });
+  const total = allBandi.length, alta = allBandi.filter(b => b.priorita===1).length, scad = allBandi.filter(b => isUrgent(b.scadenza)).length;
+  document.getElementById('cnt-all').textContent=total; document.getElementById('cnt-alta').textContent=alta; document.getElementById('cnt-scad').textContent=scad;
+  document.getElementById('hdrTotal').textContent=total; document.getElementById('hdrAlta').textContent=alta; document.getElementById('hdrScad').textContent=scad;
+  document.getElementById('scnt-all').textContent=total;
+  SOURCES_INFO.forEach(src => { const el=document.getElementById('scnt-'+src.id); if(el) el.textContent=allBandi.filter(b=>b.fonte===src.id).length; });
 }
-
-function setFilter(f, btn) {
-  activeFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderCards();
-}
-function setSource(s, btn) {
-  activeSource = s;
-  document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderCards();
-}
-function setSort(s, btn) {
-  activeSort = s;
-  document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderCards();
-}
-
-function sortBandi(bandi, key) {
-  return [...bandi].sort((a, b) => {
-    if (key === 'priorita') return (a.priorita||3) - (b.priorita||3);
-    if (key === 'scadenza') return parseDate(a.scadenza) - parseDate(b.scadenza);
-    if (key === 'importo')  return parseImporto(b.importo_max) - parseImporto(a.importo_max);
-    if (key === 'fonte')    return (a.fonte||'').localeCompare(b.fonte||'');
-    return 0;
-  });
-}
-function parseDate(d) {
-  if (!d) return 99999999;
-  const p = d.split('/');
-  return p.length === 3 ? parseInt(p[2]+p[1]+p[0]) : 99999999;
-}
-function parseImporto(imp) { return parseInt((imp||'').replace(/[^\d]/g,'')) || 0; }
-function isUrgent(s) {
-  const p = (s||'').split('/');
-  if (p.length !== 3) return false;
-  const d = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
-  return (d - Date.now()) / 86400000 <= 14 && (d - Date.now()) / 86400000 >= 0;
-}
-
-function setCache(bandi) { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), bandi })); }
-function getCache() {
-  try {
-    const obj = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-    if (!obj || Date.now() - obj.ts > CACHE_TTL) return null;
-    return obj;
-  } catch { return null; }
-}
-function clearCache() { localStorage.removeItem(CACHE_KEY); location.reload(); }
-
-function escHtml(str) {
-  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function showError(msg) {
-  const el = document.getElementById('errorBanner');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
+function setFilter(f,btn){activeFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCards();}
+function setSource(s,btn){activeSource=s;document.querySelectorAll('.source-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCards();}
+function setSort(s,btn){activeSort=s;document.querySelectorAll('.sort-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCards();}
+function sortBandi(bandi,key){return[...bandi].sort((a,b)=>{if(key==='priorita')return(a.priorita||3)-(b.priorita||3);if(key==='scadenza')return parseDate(a.scadenza)-parseDate(b.scadenza);if(key==='importo')return parseImporto(b.importo_max)-parseImporto(a.importo_max);if(key==='fonte')return(a.fonte||'').localeCompare(b.fonte||'');return 0;});}
+function parseDate(d){if(!d)return 99999999;const p=d.split('/');return p.length===3?parseInt(p[2]+p[1]+p[0]):99999999;}
+function parseImporto(imp){return parseInt((imp||'').replace(/[^\d]/g,''))||0;}
+function isUrgent(s){const p=(s||'').split('/');if(p.length!==3)return false;const d=new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));return(d-Date.now())/86400000<=14&&(d-Date.now())/86400000>=0;}
+function setCache(bandi){localStorage.setItem(CACHE_KEY,JSON.stringify({ts:Date.now(),bandi}));}
+function getCache(){try{const obj=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');if(!obj||Date.now()-obj.ts>CACHE_TTL)return null;return obj;}catch{return null;}}
+function clearCache(){localStorage.removeItem(CACHE_KEY);location.reload();}
+function escHtml(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function showError(msg){const el=document.getElementById('errorBanner');el.textContent=msg;el.style.display='block';}
 </script>
 </body>
 </html>
