@@ -8,635 +8,111 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0f14;
-    --surface: #13161e;
-    --surface2: #1a1e28;
-    --border: #252a38;
-    --border2: #2e3448;
-    --text: #e8ecf4;
-    --text-muted: #6b7494;
-    --text-dim: #3d4562;
-    --gold: #d4a843;
-    --gold-dim: #a07c28;
-    --gold-glow: rgba(212,168,67,.12);
-    --green: #2ecc8a;
-    --green-dim: rgba(46,204,138,.12);
-    --red: #e05c5c;
-    --red-dim: rgba(224,92,92,.12);
-    --amber: #f0a045;
-    --amber-dim: rgba(240,160,69,.12);
-    --blue: #4d8ef7;
-    --blue-dim: rgba(77,142,247,.12);
-    --purple: #a077e8;
-    --purple-dim: rgba(160,119,232,.12);
-    --teal: #38bfb0;
-    --teal-dim: rgba(56,191,176,.12);
-    --pink: #e06aab;
-    --pink-dim: rgba(224,106,171,.12);
+    --bg: #0d0f14; --surface: #13161e; --surface2: #1a1e28;
+    --border: #252a38; --border2: #2e3448;
+    --text: #e8ecf4; --text-muted: #6b7494; --text-dim: #3d4562;
+    --gold: #d4a843; --gold-dim: #a07c28; --gold-glow: rgba(212,168,67,.12);
+    --green: #2ecc8a; --green-dim: rgba(46,204,138,.12);
+    --red: #e05c5c; --red-dim: rgba(224,92,92,.12);
+    --amber: #f0a045; --amber-dim: rgba(240,160,69,.12);
+    --blue: #4d8ef7; --blue-dim: rgba(77,142,247,.12);
+    --purple: #a077e8; --purple-dim: rgba(160,119,232,.12);
+    --teal: #38bfb0; --teal-dim: rgba(56,191,176,.12);
+    --pink: #e06aab; --pink-dim: rgba(224,106,171,.12);
     --font-display: 'Syne', sans-serif;
     --font-body: 'Instrument Sans', sans-serif;
     --font-mono: 'DM Mono', monospace;
-    --radius: 10px;
-    --radius-sm: 6px;
+    --radius: 10px; --radius-sm: 6px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 14px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  /* ─── NOISE TEXTURE ─── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ─── HEADER ─── */
-  header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(13,15,20,.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-  }
-
-  .header-inner {
-    max-width: 1600px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    height: 56px;
-  }
-
-  .logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: -.5px;
-    color: var(--text);
-    white-space: nowrap;
-  }
-
-  .logo span {
-    color: var(--gold);
-  }
-
-  .live-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 3px 10px;
-    white-space: nowrap;
-  }
-
-  .live-dot {
-    width: 6px; height: 6px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%,100% { opacity: 1; }
-    50% { opacity: .3; }
-  }
-
-  .header-stats {
-    display: flex;
-    gap: 0;
-    margin-left: auto;
-  }
-
-  .stat-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    padding: 4px 14px;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+  header { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  .header-inner { max-width: 1600px; margin: 0 auto; display: flex; align-items: center; gap: 24px; height: 56px; }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -.5px; color: var(--text); white-space: nowrap; }
+  .logo span { color: var(--gold); }
+  .live-badge { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; white-space: nowrap; }
+  .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+  .header-stats { display: flex; gap: 0; margin-left: auto; }
+  .stat-pill { font-family: var(--font-mono); font-size: 11px; padding: 4px 14px; border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap; }
   .stat-pill:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
   .stat-pill:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left: none; }
   .stat-pill:not(:first-child):not(:last-child) { border-left: none; }
-
-  .stat-pill strong {
-    color: var(--gold);
-    font-weight: 500;
-  }
-
-  .refresh-btn {
-    margin-left: 12px;
-    background: var(--gold);
-    color: #000;
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 6px 14px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background .15s, transform .1s;
-  }
-
+  .stat-pill strong { color: var(--gold); font-weight: 500; }
+  .refresh-btn { margin-left: 12px; background: var(--gold); color: #000; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background .15s, transform .1s; }
   .refresh-btn:hover { background: #e8bc50; }
   .refresh-btn:active { transform: scale(.97); }
   .refresh-btn:disabled { background: var(--surface2); color: var(--text-muted); cursor: not-allowed; }
-
-  /* ─── MAIN LAYOUT ─── */
-  .layout {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 24px;
-    min-height: calc(100vh - 56px);
-  }
-
-  /* ─── SIDEBAR ─── */
-  .sidebar {
-    padding: 20px 0;
-    position: sticky;
-    top: 76px;
-    height: fit-content;
-  }
-
-  .sidebar-section {
-    margin-bottom: 24px;
-  }
-
-  .sidebar-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-    padding-left: 2px;
-  }
-
-  .filter-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 8px 12px;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    color: var(--text-muted);
-    font-family: var(--font-body);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all .15s;
-    text-align: left;
-  }
-
-  .filter-btn:hover {
-    background: var(--surface);
-    color: var(--text);
-    border-color: var(--border);
-  }
-
-  .filter-btn.active {
-    background: var(--gold-glow);
-    border-color: var(--gold-dim);
-    color: var(--gold);
-  }
-
-  .filter-btn .count {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    min-width: 22px;
-    text-align: right;
-  }
-
-  /* source filter buttons */
-  .source-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 7px 12px;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    color: var(--text-muted);
-    font-family: var(--font-body);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all .15s;
-    text-align: left;
-  }
-
+  .layout { max-width: 1600px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 220px 1fr; gap: 24px; min-height: calc(100vh - 56px); }
+  .sidebar { padding: 20px 0; position: sticky; top: 76px; height: fit-content; }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; padding-left: 2px; }
+  .filter-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 8px 12px; background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm); color: var(--text-muted); font-family: var(--font-body); font-size: 13px; cursor: pointer; transition: all .15s; text-align: left; }
+  .filter-btn:hover { background: var(--surface); color: var(--text); border-color: var(--border); }
+  .filter-btn.active { background: var(--gold-glow); border-color: var(--gold-dim); color: var(--gold); }
+  .filter-btn .count { font-family: var(--font-mono); font-size: 11px; min-width: 22px; text-align: right; }
+  .source-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px 12px; background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm); color: var(--text-muted); font-family: var(--font-body); font-size: 13px; cursor: pointer; transition: all .15s; text-align: left; }
   .source-btn:hover { background: var(--surface); color: var(--text); border-color: var(--border); }
-
   .source-btn.active { color: var(--text); background: var(--surface2); border-color: var(--border2); }
-
-  .source-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
+  .source-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .source-name { flex: 1; }
-  .source-count {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  /* ─── MAIN CONTENT ─── */
-  .main {
-    padding: 20px 0;
-    min-width: 0;
-  }
-
-  /* ─── SEARCH BAR ─── */
-  .search-wrap {
-    position: relative;
-    margin-bottom: 16px;
-  }
-
-  .search-input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 16px 10px 40px;
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 14px;
-    outline: none;
-    transition: border-color .15s;
-  }
-
+  .source-count { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+  .main { padding: 20px 0; min-width: 0; }
+  .search-wrap { position: relative; margin-bottom: 16px; }
+  .search-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px 10px 40px; color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color .15s; }
   .search-input:focus { border-color: var(--gold-dim); }
   .search-input::placeholder { color: var(--text-dim); }
-
-  .search-icon {
-    position: absolute;
-    left: 12px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-dim);
-    font-size: 16px;
-    pointer-events: none;
-  }
-
-  /* ─── SORT BAR ─── */
-  .sort-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-
-  .sort-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-right: 4px;
-  }
-
-  .sort-chip {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all .15s;
-  }
-
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 16px; pointer-events: none; }
+  .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sort-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-right: 4px; }
+  .sort-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); cursor: pointer; transition: all .15s; }
   .sort-chip:hover { border-color: var(--border2); color: var(--text); }
   .sort-chip.active { background: var(--gold-glow); border-color: var(--gold-dim); color: var(--gold); }
-
-  /* ─── CARDS GRID ─── */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 14px;
-  }
-
-  /* ─── BANDO CARD ─── */
-  .bando-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    transition: border-color .2s, transform .15s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .bando-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--card-accent, var(--border2));
-    border-radius: var(--radius) 0 0 var(--radius);
-  }
-
-  .bando-card:hover {
-    border-color: var(--border2);
-    transform: translateY(-1px);
-  }
-
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+  .bando-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; transition: border-color .2s, transform .15s; cursor: pointer; position: relative; overflow: hidden; }
+  .bando-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--card-accent, var(--border2)); border-radius: var(--radius) 0 0 var(--radius); }
+  .bando-card:hover { border-color: var(--border2); transform: translateY(-1px); }
   .bando-card.expanded { border-color: var(--border2); }
-
-  .card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .card-source-badge {
-    flex-shrink: 0;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    padding: 3px 7px;
-    border-radius: 4px;
-    margin-top: 2px;
-  }
-
-  .card-title {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 1.35;
-    color: var(--text);
-    flex: 1;
-  }
-
-  .priority-badge {
-    flex-shrink: 0;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 9px;
-    font-weight: 700;
-    margin-top: 1px;
-  }
-
+  .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .card-source-badge { flex-shrink: 0; font-family: var(--font-mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; margin-top: 2px; }
+  .card-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; line-height: 1.35; color: var(--text); flex: 1; }
+  .priority-badge { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; margin-top: 1px; }
   .p-alta { background: rgba(224,92,92,.2); color: var(--red); border: 1px solid rgba(224,92,92,.3); }
   .p-media { background: rgba(240,160,69,.2); color: var(--amber); border: 1px solid rgba(240,160,69,.3); }
   .p-bassa { background: rgba(107,116,148,.15); color: var(--text-muted); border: 1px solid var(--border); }
-
-  .card-meta {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-  }
-
-  .meta-chip {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .meta-chip.scadenza-urgente {
-    border-color: rgba(224,92,92,.3);
-    color: var(--red);
-    background: var(--red-dim);
-  }
-
-  .meta-chip.importo {
-    border-color: rgba(212,168,67,.25);
-    color: var(--gold);
-    background: var(--gold-glow);
-  }
-
-  .card-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.55;
-    margin-bottom: 10px;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .card-link {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--gold);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    transition: opacity .15s;
-  }
-
+  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .meta-chip { font-family: var(--font-mono); font-size: 10px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+  .meta-chip.scadenza-urgente { border-color: rgba(224,92,92,.3); color: var(--red); background: var(--red-dim); }
+  .meta-chip.importo { border-color: rgba(212,168,67,.25); color: var(--gold); background: var(--gold-glow); }
+  .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin-bottom: 10px; }
+  .card-footer { display: flex; align-items: center; gap: 8px; }
+  .card-link { font-family: var(--font-mono); font-size: 11px; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: opacity .15s; }
   .card-link:hover { opacity: .75; }
-
-  .docs-btn {
-    margin-left: auto;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 4px 10px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all .15s;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .docs-btn:hover { border-color: var(--border2); color: var(--text); }
-  .docs-btn.has-docs { border-color: rgba(77,142,247,.3); color: var(--blue); }
-
-  /* Expanded panel */
-  .card-expanded {
-    display: none;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-  }
-
+  .expand-btn { margin-left: auto; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+  .expand-btn:hover { border-color: var(--border2); color: var(--text); }
+  .card-expanded { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
   .bando-card.expanded .card-expanded { display: block; }
-
-  .beneficiari-row {
-    margin-bottom: 8px;
-  }
-
-  .beneficiari-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: var(--text-dim);
-    margin-bottom: 4px;
-  }
-
-  .beneficiari-text {
-    font-size: 13px;
-    color: var(--text-muted);
-  }
-
-  .docs-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 8px;
-  }
-
-  .doc-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    color: var(--blue);
-    font-size: 12px;
-    transition: border-color .15s;
-  }
-
-  .doc-item:hover { border-color: rgba(77,142,247,.4); }
-
-  .doc-icon { flex-shrink: 0; font-size: 14px; }
-
-  /* ─── LOADING STATE ─── */
-  .loading-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-  }
-
-  .spinner {
-    width: 36px; height: 36px;
-    border: 2px solid var(--border2);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 16px;
-  }
-
+  .detail-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-dim); margin-bottom: 4px; margin-top: 10px; }
+  .detail-label:first-child { margin-top: 0; }
+  .detail-text { font-size: 13px; color: var(--text-muted); }
+  .source-link-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .source-link { display: flex; align-items: center; gap: 6px; padding: 7px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); text-decoration: none; font-family: var(--font-mono); font-size: 11px; transition: border-color .15s; }
+  .source-link:hover { border-color: var(--border2); }
+  .source-link.primary { border-color: rgba(212,168,67,.3); color: var(--gold); }
+  .source-link.primary:hover { border-color: var(--gold); }
+  .source-link.secondary { color: var(--blue); border-color: rgba(77,142,247,.25); }
+  .source-link.secondary:hover { border-color: var(--blue); }
+  .warning-note { background: rgba(240,160,69,.08); border: 1px solid rgba(240,160,69,.25); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 12px; color: var(--amber); margin-top: 8px; }
+  .spinner { width: 36px; height: 36px; border: 2px solid var(--border2); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading-source {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 8px;
-  }
-
-  .loading-progress {
-    width: 200px;
-    height: 2px;
-    background: var(--surface2);
-    border-radius: 2px;
-    margin: 12px auto 0;
-    overflow: hidden;
-  }
-
-  .loading-bar {
-    height: 100%;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: width .5s ease;
-  }
-
-  /* ─── EMPTY STATE ─── */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-    font-size: 13px;
-  }
-
-  /* ─── ERROR BANNER ─── */
-  .error-banner {
-    background: var(--red-dim);
-    border: 1px solid rgba(224,92,92,.3);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: var(--red);
-    display: none;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 16px 24px;
-    margin-top: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--text-dim);
-  }
-
-  /* ─── SKELETON CARDS ─── */
-  .skeleton-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    animation: shimmer 1.5s infinite;
-  }
-
-  @keyframes shimmer {
-    0%,100% { opacity: .6; }
-    50% { opacity: 1; }
-  }
-
-  .skel-line {
-    height: 12px;
-    background: var(--surface2);
-    border-radius: 4px;
-    margin-bottom: 8px;
-  }
-
-  /* ─── SOURCE COLORS ─── */
+  .loading-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; }
+  .loading-source { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+  .loading-progress { width: 200px; height: 2px; background: var(--surface2); border-radius: 2px; margin: 12px auto 0; overflow: hidden; }
+  .loading-bar { height: 100%; background: var(--gold); border-radius: 2px; transition: width .5s ease; }
+  .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-dim); font-family: var(--font-mono); font-size: 13px; }
+  .error-banner { background: var(--red-dim); border: 1px solid rgba(224,92,92,.3); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: var(--red); display: none; }
+  footer { border-top: 1px solid var(--border); padding: 16px 24px; margin-top: 40px; display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); }
+  .last-update { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-bottom: 12px; }
   [data-source="regione"] { --card-accent: #4d8ef7; }
   [data-source="cciaa"]   { --card-accent: #a077e8; }
   [data-source="mimit"]   { --card-accent: #38bfb0; }
@@ -644,8 +120,6 @@
   [data-source="inail"]   { --card-accent: #e05c5c; }
   [data-source="invitalia"] { --card-accent: #2ecc8a; }
   [data-source="simest"]  { --card-accent: #e06aab; }
-
-  /* source badge colors */
   .badge-regione    { background: var(--blue-dim); color: var(--blue); }
   .badge-cciaa      { background: var(--purple-dim); color: var(--purple); }
   .badge-mimit      { background: var(--teal-dim); color: var(--teal); }
@@ -653,132 +127,39 @@
   .badge-inail      { background: var(--red-dim); color: var(--red); }
   .badge-invitalia  { background: var(--green-dim); color: var(--green); }
   .badge-simest     { background: var(--pink-dim); color: var(--pink); }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { position: static; display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 0 0; }
-    .sidebar-section { margin-bottom: 0; }
-    .sidebar-label { display: none; }
-    .filter-btn, .source-btn { width: auto; white-space: nowrap; }
-    .header-stats { display: none; }
-  }
-
-  @media (max-width: 600px) {
-    .cards-grid { grid-template-columns: 1fr; }
-    .layout { padding: 0 12px; }
-    header { padding: 0 12px; }
-  }
-
-  /* ─── LAST UPDATE CHIP ─── */
-  .last-update {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--text-dim);
-    margin-bottom: 12px;
-  }
-
-  /* ─── API KEY SETUP ─── */
-  .setup-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.85);
-    backdrop-filter: blur(8px);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .setup-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 16px;
-    padding: 36px;
-    max-width: 440px;
-    width: 100%;
-  }
-
-  .setup-title {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 22px;
-    margin-bottom: 8px;
-  }
-
-  .setup-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    line-height: 1.6;
-  }
-
-  .setup-input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 11px 14px;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    outline: none;
-    margin-bottom: 14px;
-    transition: border-color .15s;
-  }
-
+  .skeleton-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; animation: shimmer 1.5s infinite; }
+  @keyframes shimmer { 0%,100% { opacity: .6; } 50% { opacity: 1; } }
+  .skel-line { height: 12px; background: var(--surface2); border-radius: 4px; margin-bottom: 8px; }
+  .setup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); backdrop-filter: blur(8px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .setup-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; padding: 36px; max-width: 440px; width: 100%; }
+  .setup-title { font-family: var(--font-display); font-weight: 800; font-size: 22px; margin-bottom: 8px; }
+  .setup-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
+  .setup-input { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius); padding: 11px 14px; color: var(--text); font-family: var(--font-mono); font-size: 13px; outline: none; margin-bottom: 14px; transition: border-color .15s; }
   .setup-input:focus { border-color: var(--gold-dim); }
   .setup-input::placeholder { color: var(--text-dim); }
-
-  .setup-submit {
-    width: 100%;
-    background: var(--gold);
-    color: #000;
-    border: none;
-    border-radius: var(--radius);
-    padding: 12px;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background .15s;
-  }
-
+  .setup-submit { width: 100%; background: var(--gold); color: #000; border: none; border-radius: var(--radius); padding: 12px; font-family: var(--font-display); font-weight: 700; font-size: 15px; cursor: pointer; transition: background .15s; }
   .setup-submit:hover { background: #e8bc50; }
-
-  .setup-note {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 12px;
-    text-align: center;
-  }
+  .setup-note { font-size: 11px; color: var(--text-dim); margin-top: 12px; text-align: center; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { position: static; display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 0 0; } .sidebar-section { margin-bottom: 0; } .sidebar-label { display: none; } .filter-btn, .source-btn { width: auto; white-space: nowrap; } .header-stats { display: none; } }
+  @media (max-width: 600px) { .cards-grid { grid-template-columns: 1fr; } .layout { padding: 0 12px; } header { padding: 0 12px; } }
 </style>
 </head>
 <body>
 
-<!-- Setup overlay -->
 <div class="setup-overlay" id="setupOverlay">
   <div class="setup-card">
     <div class="setup-title">G.I. Finance <span style="color:var(--gold)">·</span> Setup</div>
-    <p class="setup-desc">
-      Inserisci la tua chiave API Anthropic per attivare la ricerca automatica dei bandi. 
-      La chiave viene salvata localmente nel browser e non trasmessa ad altri server.
-    </p>
+    <p class="setup-desc">Inserisci la tua chiave API Anthropic per attivare la ricerca automatica dei bandi. La chiave viene salvata localmente nel browser.</p>
     <input type="password" class="setup-input" id="apiKeyInput" placeholder="sk-ant-api03-..." />
     <button class="setup-submit" onclick="saveKey()">Attiva Monitor →</button>
     <p class="setup-note">La chiave è conservata solo in localStorage del tuo browser.</p>
   </div>
 </div>
 
-<!-- Header -->
 <header>
   <div class="header-inner">
     <div class="logo">G<span>.</span>I<span>.</span> Finance <span style="opacity:.3;font-weight:400">|</span> <span style="color:var(--gold);font-size:14px;font-weight:700">BANDI</span></div>
-    <div class="live-badge">
-      <div class="live-dot"></div>
-      <span>LIVE</span>
-      <span style="color:var(--text-dim)">· AUTO 07:00</span>
-    </div>
+    <div class="live-badge"><div class="live-dot"></div><span>LIVE</span><span style="color:var(--text-dim)">· AUTO 07:00</span></div>
     <div class="header-stats">
       <div class="stat-pill">Totale <strong id="hdrTotal">—</strong></div>
       <div class="stat-pill">Alta priorità <strong id="hdrAlta">—</strong></div>
@@ -789,87 +170,34 @@
 </header>
 
 <div class="layout">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-label">Filtri</div>
-      <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">
-        <span>Tutti i bandi</span>
-        <span class="count" id="cnt-all">0</span>
-      </button>
-      <button class="filter-btn" data-filter="alta" onclick="setFilter('alta',this)">
-        <span>🔴 Priorità alta</span>
-        <span class="count" id="cnt-alta">0</span>
-      </button>
-      <button class="filter-btn" data-filter="scadenza" onclick="setFilter('scadenza',this)">
-        <span>⚠ Scad. &lt;14gg</span>
-        <span class="count" id="cnt-scad">0</span>
-      </button>
-      <button class="filter-btn" data-filter="documenti" onclick="setFilter('documenti',this)">
-        <span>📎 Con documenti</span>
-        <span class="count" id="cnt-docs">0</span>
-      </button>
+      <button class="filter-btn active" onclick="setFilter('all',this)"><span>Tutti i bandi</span><span class="count" id="cnt-all">0</span></button>
+      <button class="filter-btn" onclick="setFilter('alta',this)"><span>🔴 Priorità alta</span><span class="count" id="cnt-alta">0</span></button>
+      <button class="filter-btn" onclick="setFilter('scadenza',this)"><span>⚠ Scad. &lt;14gg</span><span class="count" id="cnt-scad">0</span></button>
     </div>
-
     <div class="sidebar-section">
       <div class="sidebar-label">Fonte</div>
-      <button class="source-btn active" data-source="tutte" onclick="setSource('tutte',this)">
-        <span class="source-dot" style="background:var(--text-muted)"></span>
-        <span class="source-name">Tutte le fonti</span>
-        <span class="source-count" id="scnt-all">0</span>
-      </button>
-      <button class="source-btn" data-source="regione" onclick="setSource('regione',this)">
-        <span class="source-dot" style="background:var(--blue)"></span>
-        <span class="source-name">Regione Lombardia</span>
-        <span class="source-count" id="scnt-regione">0</span>
-      </button>
-      <button class="source-btn" data-source="cciaa" onclick="setSource('cciaa',this)">
-        <span class="source-dot" style="background:var(--purple)"></span>
-        <span class="source-name">Cam. di Commercio</span>
-        <span class="source-count" id="scnt-cciaa">0</span>
-      </button>
-      <button class="source-btn" data-source="mimit" onclick="setSource('mimit',this)">
-        <span class="source-dot" style="background:var(--teal)"></span>
-        <span class="source-name">MIMIT</span>
-        <span class="source-count" id="scnt-mimit">0</span>
-      </button>
-      <button class="source-btn" data-source="finlombarda" onclick="setSource('finlombarda',this)">
-        <span class="source-dot" style="background:var(--gold)"></span>
-        <span class="source-name">Finlombarda</span>
-        <span class="source-count" id="scnt-finlombarda">0</span>
-      </button>
-      <button class="source-btn" data-source="inail" onclick="setSource('inail',this)">
-        <span class="source-dot" style="background:var(--red)"></span>
-        <span class="source-name">INAIL</span>
-        <span class="source-count" id="scnt-inail">0</span>
-      </button>
-      <button class="source-btn" data-source="invitalia" onclick="setSource('invitalia',this)">
-        <span class="source-dot" style="background:var(--green)"></span>
-        <span class="source-name">Invitalia</span>
-        <span class="source-count" id="scnt-invitalia">0</span>
-      </button>
-      <button class="source-btn" data-source="simest" onclick="setSource('simest',this)">
-        <span class="source-dot" style="background:var(--pink)"></span>
-        <span class="source-name">Simest</span>
-        <span class="source-count" id="scnt-simest">0</span>
-      </button>
+      <button class="source-btn active" onclick="setSource('tutte',this)"><span class="source-dot" style="background:var(--text-muted)"></span><span class="source-name">Tutte le fonti</span><span class="source-count" id="scnt-all">0</span></button>
+      <button class="source-btn" onclick="setSource('regione',this)"><span class="source-dot" style="background:var(--blue)"></span><span class="source-name">Regione Lombardia</span><span class="source-count" id="scnt-regione">0</span></button>
+      <button class="source-btn" onclick="setSource('cciaa',this)"><span class="source-dot" style="background:var(--purple)"></span><span class="source-name">Cam. di Commercio</span><span class="source-count" id="scnt-cciaa">0</span></button>
+      <button class="source-btn" onclick="setSource('mimit',this)"><span class="source-dot" style="background:var(--teal)"></span><span class="source-name">MIMIT</span><span class="source-count" id="scnt-mimit">0</span></button>
+      <button class="source-btn" onclick="setSource('finlombarda',this)"><span class="source-dot" style="background:var(--gold)"></span><span class="source-name">Finlombarda</span><span class="source-count" id="scnt-finlombarda">0</span></button>
+      <button class="source-btn" onclick="setSource('inail',this)"><span class="source-dot" style="background:var(--red)"></span><span class="source-name">INAIL</span><span class="source-count" id="scnt-inail">0</span></button>
+      <button class="source-btn" onclick="setSource('invitalia',this)"><span class="source-dot" style="background:var(--green)"></span><span class="source-name">Invitalia</span><span class="source-count" id="scnt-invitalia">0</span></button>
+      <button class="source-btn" onclick="setSource('simest',this)"><span class="source-dot" style="background:var(--pink)"></span><span class="source-name">Simest</span><span class="source-count" id="scnt-simest">0</span></button>
     </div>
-
-    <div style="margin-top:16px; padding: 0 4px;">
-      <button onclick="clearCache()" style="background:none;border:none;color:var(--text-dim);font-family:var(--font-mono);font-size:10px;cursor:pointer;padding:0;">
-        ⊘ Svuota cache
-      </button>
+    <div style="margin-top:16px;padding:0 4px;">
+      <button onclick="clearCache()" style="background:none;border:none;color:var(--text-dim);font-family:var(--font-mono);font-size:10px;cursor:pointer;padding:0;">⊘ Svuota cache</button>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input type="text" class="search-input" id="searchInput" placeholder="Cerca per titolo, ente, beneficiari..." oninput="renderCards()">
     </div>
-
     <div class="sort-bar">
       <span class="sort-label">Ordina:</span>
       <button class="sort-chip active" data-sort="priorita" onclick="setSort('priorita',this)">Priorità</button>
@@ -877,15 +205,12 @@
       <button class="sort-chip" data-sort="importo" onclick="setSort('importo',this)">Importo</button>
       <button class="sort-chip" data-sort="fonte" onclick="setSort('fonte',this)">Fonte</button>
     </div>
-
     <div class="last-update" id="lastUpdate"></div>
     <div class="error-banner" id="errorBanner"></div>
-
     <div class="cards-grid" id="cardsGrid">
-      <!-- Skeleton loaders -->
-      <div class="skeleton-card"><div class="skel-line" style="width:40%;height:10px"></div><div class="skel-line" style="width:80%"></div><div class="skel-line" style="width:90%;height:10px"></div><div class="skel-line" style="width:60%;height:10px"></div></div>
-      <div class="skeleton-card"><div class="skel-line" style="width:35%;height:10px"></div><div class="skel-line" style="width:75%"></div><div class="skel-line" style="width:85%;height:10px"></div><div class="skel-line" style="width:55%;height:10px"></div></div>
-      <div class="skeleton-card"><div class="skel-line" style="width:45%;height:10px"></div><div class="skel-line" style="width:70%"></div><div class="skel-line" style="width:95%;height:10px"></div><div class="skel-line" style="width:50%;height:10px"></div></div>
+      <div class="skeleton-card"><div class="skel-line" style="width:40%;height:10px"></div><div class="skel-line" style="width:80%"></div><div class="skel-line" style="width:90%;height:10px"></div></div>
+      <div class="skeleton-card"><div class="skel-line" style="width:35%;height:10px"></div><div class="skel-line" style="width:75%"></div><div class="skel-line" style="width:85%;height:10px"></div></div>
+      <div class="skeleton-card"><div class="skel-line" style="width:45%;height:10px"></div><div class="skel-line" style="width:70%"></div><div class="skel-line" style="width:95%;height:10px"></div></div>
     </div>
   </main>
 </div>
@@ -896,44 +221,74 @@
 </footer>
 
 <script>
-// ─── CONFIG ──────────────────────────────────────────────────────────────────
-const CACHE_KEY = 'bandi_cache_v5';
-const CACHE_TTL = 20 * 60 * 60 * 1000; // 20 hours
+// ─── URL UFFICIALI VERIFICATI ─────────────────────────────────────────────────
+// Questi URL sono stati verificati manualmente. Claude NON genera URL.
+const SOURCE_URLS = {
+  regione: {
+    label: 'Regione Lombardia',
+    home: 'https://www.bandi.regione.lombardia.it/servizi/servizio/bandi',
+    search: 'https://www.bandi.regione.lombardia.it/servizi/servizio/bandi?tipo=PMI'
+  },
+  cciaa: {
+    label: 'Camere di Commercio',
+    home: 'https://www.milomb.camcom.it/contributi-e-finanziamenti',
+    search: 'https://www.milomb.camcom.it/contributi-e-finanziamenti'
+  },
+  mimit: {
+    label: 'MIMIT',
+    home: 'https://www.mimit.gov.it/it/incentivi',
+    search: 'https://www.mimit.gov.it/it/incentivi'
+  },
+  finlombarda: {
+    label: 'Finlombarda',
+    home: 'https://www.finlombarda.it/prodotti-e-servizi/prodotti-servizi/index',
+    search: 'https://www.finlombarda.it/prodotti-e-servizi/prodotti-servizi/index'
+  },
+  inail: {
+    label: 'INAIL',
+    home: 'https://www.inail.it/portale/prevenzione-e-sicurezza/it/prevenzione-e-sicurezza/finanziamenti-per-la-sicurezza/incentivi-alle-imprese.html',
+    bando_isi: 'https://www.inail.it/portale/prevenzione-e-sicurezza/it/prevenzione-e-sicurezza/finanziamenti-per-la-sicurezza/incentivi-alle-imprese/bando-isi-2025.html'
+  },
+  invitalia: {
+    label: 'Invitalia',
+    home: 'https://www.invitalia.it/cosa-facciamo/rafforziamo-le-imprese',
+    search: 'https://www.invitalia.it/cosa-facciamo/rafforziamo-le-imprese'
+  },
+  simest: {
+    label: 'Simest',
+    home: 'https://www.simest.it/strumenti-finanziari',
+    fondo394: 'https://www.simest.it/strumenti-finanziari/fondo-394'
+  }
+};
+
+const CACHE_KEY = 'bandi_cache_v6';
+const CACHE_TTL = 20 * 60 * 60 * 1000;
 const API_KEY_LS = 'gi_finance_apikey';
 
-// Tutti i prompt per le 7 fonti — usati in una singola chiamata combinata
 const SOURCES_INFO = [
-  { id: 'regione',     label: 'Regione Lombardia' },
-  { id: 'cciaa',       label: 'Camere di Commercio Lombardia' },
-  { id: 'mimit',       label: 'MIMIT' },
+  { id: 'regione', label: 'Regione Lombardia' },
+  { id: 'cciaa', label: 'Camere di Commercio' },
+  { id: 'mimit', label: 'MIMIT' },
   { id: 'finlombarda', label: 'Finlombarda' },
-  { id: 'inail',       label: 'INAIL' },
-  { id: 'invitalia',   label: 'Invitalia' },
-  { id: 'simest',      label: 'Simest' }
+  { id: 'inail', label: 'INAIL' },
+  { id: 'invitalia', label: 'Invitalia' },
+  { id: 'simest', label: 'Simest' }
 ];
 
-// ─── STATE ───────────────────────────────────────────────────────────────────
 let allBandi = [];
 let activeFilter = 'all';
 let activeSource = 'tutte';
 let activeSort = 'priorita';
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const key = localStorage.getItem(API_KEY_LS);
-  if (!key) {
-    document.getElementById('setupOverlay').style.display = 'flex';
-    return;
-  }
+  if (!key) { document.getElementById('setupOverlay').style.display = 'flex'; return; }
   init();
 });
 
 function saveKey() {
   const k = document.getElementById('apiKeyInput').value.trim();
-  if (!k.startsWith('sk-ant')) {
-    alert('Chiave non valida. Deve iniziare con sk-ant-...');
-    return;
-  }
+  if (!k.startsWith('sk-ant')) { alert('Chiave non valida. Deve iniziare con sk-ant-...'); return; }
   localStorage.setItem(API_KEY_LS, k);
   document.getElementById('setupOverlay').style.display = 'none';
   init();
@@ -946,8 +301,7 @@ async function init() {
     renderAll();
     const ageH = Math.round((Date.now() - cached.ts) / 3600000);
     document.getElementById('lastUpdate').textContent =
-      'Dati aggiornati ' + (ageH === 0 ? "meno di un'ora fa" : ageH + 'h fa') +
-      ' · ' + new Date(cached.ts).toLocaleString('it-IT');
+      'Dati aggiornati ' + (ageH === 0 ? "meno di un'ora fa" : ageH + 'h fa') + ' · ' + new Date(cached.ts).toLocaleString('it-IT');
     checkAutoRefresh(cached.ts);
   } else {
     await runSearch();
@@ -960,7 +314,42 @@ function checkAutoRefresh(ts) {
   if (now >= today7am && new Date(ts) < today7am) runSearch();
 }
 
-// ─── SEARCH ──────────────────────────────────────────────────────────────────
+const SYSTEM_PROMPT = `Sei un esperto di finanza agevolata italiana. Conosci perfettamente tutti i bandi attivi di Regione Lombardia, CCIAA lombarde, MIMIT, Finlombarda, INAIL, Invitalia e Simest.
+
+REGOLA ASSOLUTA SUGLI URL: NON generare URL. Il campo "url_key" deve contenere SOLO una chiave predefinita tra quelle elencate sotto. Il sistema applicherà automaticamente l'URL corretto e verificato.
+
+Chiavi URL disponibili per ogni fonte:
+- regione: "home" o "search"
+- cciaa: "home"
+- mimit: "home"
+- finlombarda: "home"  
+- inail: "home" o "bando_isi"
+- invitalia: "home"
+- simest: "home" o "fondo394"
+
+Rispondi SOLO con JSON valido, zero testo fuori dal JSON, zero backtick, zero markdown.
+
+Struttura JSON:
+{
+  "bandi": [
+    {
+      "titolo": "Nome preciso del bando",
+      "ente": "Nome ente erogatore",
+      "fonte": "regione|cciaa|mimit|finlombarda|inail|invitalia|simest",
+      "url_key": "home",
+      "scadenza": "DD/MM/YYYY oppure A sportello oppure Periodico/annuale",
+      "importo_max": "es. € 130.000 oppure N.D.",
+      "beneficiari": "Chi può accedere (max 80 caratteri)",
+      "oggetto": "Cosa finanzia il bando (max 130 caratteri)",
+      "priorita": 2,
+      "note_accesso": "Indicazioni pratiche su come accedere, dove fare domanda, eventuali scadenze imminenti (max 200 caratteri)"
+    }
+  ]
+}
+
+priorita: 1=alta (scadenza <30gg o importo molto elevato o molto rilevante per PMI lombarde), 2=media, 3=bassa.
+Includi SOLO bandi attivi o strumenti ricorrenti reali. Per ogni fonte includi tutti i bandi attivi che conosci, minimo 2-3 per fonte.`;
+
 async function runSearch() {
   const apiKey = localStorage.getItem(API_KEY_LS);
   if (!apiKey) return;
@@ -971,33 +360,32 @@ async function runSearch() {
   document.getElementById('errorBanner').style.display = 'none';
 
   const grid = document.getElementById('cardsGrid');
-  grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1">' +
-    '<div class="spinner"></div>' +
-    '<div style="font-family:var(--font-mono);font-size:13px;color:var(--text-muted)">Analisi bandi in corso...</div>' +
-    '<div class="loading-source" id="loadingSource">Contatto API...</div>' +
-    '<div class="loading-progress"><div class="loading-bar" id="loadingBar" style="width:5%"></div></div>' +
-    '</div>';
+  grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1"><div class="spinner"></div><div style="font-family:var(--font-mono);font-size:13px;color:var(--text-muted)">Analisi bandi in corso...</div><div class="loading-source" id="loadingSource">Contatto API...</div><div class="loading-progress"><div class="loading-bar" id="loadingBar" style="width:5%"></div></div></div>';
 
   allBandi = [];
 
   try {
-    const today = new Date().toLocaleDateString('it-IT', {day:'2-digit',month:'2-digit',year:'numeric'});
-
-    // Prompt che chiede tutte e 7 le fonti in una sola chiamata
+    const today = new Date().toLocaleDateString('it-IT', {day:'2-digit', month:'2-digit', year:'numeric'});
     const userMsg = 'Data di oggi: ' + today + '\n\n' +
-      'Elenca tutti i bandi e finanziamenti agevolati ATTIVI o periodicamente disponibili per le seguenti 7 fonti:\n' +
-      '1. Regione Lombardia (fonte: regione) — bandi PMI: innovazione, digitale, energia, manifattura\n' +
-      '2. Camere di Commercio lombarde (fonte: cciaa) — voucher, contributi fiere, internazionalizzazione\n' +
-      '3. MIMIT (fonte: mimit) — Transizione 5.0, Nuova Sabatini, Brevetti+, Contratti di sviluppo\n' +
-      '4. Finlombarda (fonte: finlombarda) — garanzie, mutui PMI, fondi rotativi\n' +
-      '5. INAIL (fonte: inail) — Bandi ISI sicurezza, prevenzione infortuni\n' +
-      '6. Invitalia (fonte: invitalia) — Smart&Start, Resto al Sud, Contratti sviluppo\n' +
-      '7. Simest (fonte: simest) — Fondo 394 export, digitalizzazione estera, fiere internazionali\n\n' +
-      'Per ogni fonte includi almeno 2-3 bandi/strumenti rilevanti per PMI lombarde.\n' +
-      'RISPOSTA: solo JSON puro, nessun testo fuori dal JSON, nessun backtick, nessun markdown.';
+      'Elenca TUTTI i bandi e strumenti di finanziamento agevolato ATTIVI o ricorrenti per queste 7 fonti:\n\n' +
+      '1. REGIONE LOMBARDIA (fonte: regione)\n' +
+      '   Cerca: bandi PR FESR 2021-2027, voucher digitalizzazione, bandi energia, bandi innovazione, bandi manifattura, voucher internazionalizzazione, bandi occupazione\n\n' +
+      '2. CAMERE DI COMMERCIO LOMBARDE (fonte: cciaa)\n' +
+      '   Cerca: voucher digitali imprese, contributi fiere nazionali/internazionali, bandi formazione imprenditoriale, contributi brevetti/marchi, voucher manager innovazione\n\n' +
+      '3. MIMIT - Ministero Imprese Made in Italy (fonte: mimit)\n' +
+      '   Cerca: Transizione 5.0, Nuova Sabatini, Brevetti+, Marchi+, Disegni+, Contratti di sviluppo, IPCEI, credito imposta R&S, Fondo Garanzia PMI\n\n' +
+      '4. FINLOMBARDA (fonte: finlombarda)\n' +
+      '   Cerca: Linea Sviluppo Aziendale, Microcredito Lombardo, Rafforza&Innova, garanzie PMI, Agrifood Basket Bond, fondi di garanzia regionali\n\n' +
+      '5. INAIL (fonte: inail)\n' +
+      '   Cerca: Bando ISI 2025/2026 (ATTIVO - scadenza 28/05/2026), tutti gli assi di finanziamento ISI\n\n' +
+      '6. INVITALIA (fonte: invitalia)\n' +
+      '   Cerca: Smart&Start Italia, ON Nuove Imprese a Tasso Zero, Resto al Sud, Contratti di Sviluppo, Industria 4.0, Cultura Crea, Mediocredito Centrale\n\n' +
+      '7. SIMEST (fonte: simest)\n' +
+      '   Cerca: Fondo 394 Export, digitalizzazione PMI estero, partecipazione fiere internazionali, e-commerce internazionale, Temporary Export Manager\n\n' +
+      'Per ogni bando usa url_key tra quelle consentite. Non inventare URL. Includi tutti i bandi che conosci per ciascuna fonte.';
 
     document.getElementById('loadingBar').style.width = '30%';
-    document.getElementById('loadingSource').textContent = 'Elaborazione 7 fonti...';
+    document.getElementById('loadingSource').textContent = 'Analisi 7 fonti istituzionali...';
 
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -1010,7 +398,7 @@ async function runSearch() {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 8000,
-        system: 'Sei un esperto di finanza agevolata italiana. Rispondi SOLO con JSON valido, senza testo prima o dopo, senza backtick, senza markdown. Il JSON deve avere questa struttura: {"bandi": [{"titolo": "string", "ente": "string", "fonte": "string (regione/cciaa/mimit/finlombarda/inail/invitalia/simest)", "scadenza": "DD/MM/YYYY o A sportello o Periodico", "importo_max": "string", "beneficiari": "string max 80 char", "oggetto": "string max 120 char", "priorita": 1, "url": "string url reale", "documenti": []}]}. priorita: 1=alta, 2=media, 3=bassa.',
+        system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userMsg }]
       })
     });
@@ -1027,101 +415,75 @@ async function runSearch() {
     const data = await resp.json();
     document.getElementById('loadingBar').style.width = '95%';
 
-    // Estrai testo dalla risposta
-    const textContent = (data.content || [])
-      .filter(b => b.type === 'text')
-      .map(b => b.text)
-      .join('');
+    const textContent = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    if (!textContent.trim()) throw new Error('Risposta vuota. Verifica la chiave API e riprova.');
 
-    if (!textContent.trim()) {
-      throw new Error('Risposta vuota dall\'API. Verifica la chiave e riprova.');
-    }
-
-    // Pulisci e parsa JSON
-    let jsonStr = textContent.trim();
-    // Rimuovi possibili backtick markdown
-    jsonStr = jsonStr.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
-    // Trova il JSON object
+    let jsonStr = textContent.trim().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
     const start = jsonStr.indexOf('{');
     const end = jsonStr.lastIndexOf('}');
-    if (start === -1 || end === -1) throw new Error('Nessun JSON trovato nella risposta.');
+    if (start === -1 || end === -1) throw new Error('Formato risposta non valido. Riprova.');
     jsonStr = jsonStr.slice(start, end + 1);
 
     const parsed = JSON.parse(jsonStr);
-    allBandi = (parsed.bandi || []).map(b => ({
-      ...b,
-      fonte_label: (SOURCES_INFO.find(s => s.id === b.fonte) || { label: b.fonte }).label
-    }));
+    allBandi = (parsed.bandi || []).map(b => {
+      const srcUrls = SOURCE_URLS[b.fonte] || {};
+      const resolvedUrl = srcUrls[b.url_key] || srcUrls['home'] || '#';
+      const srcInfo = SOURCES_INFO.find(s => s.id === b.fonte) || { label: b.fonte };
+      return { ...b, url: resolvedUrl, fonte_label: srcInfo.label };
+    });
 
     document.getElementById('loadingBar').style.width = '100%';
-
-    if (allBandi.length === 0) {
-      throw new Error('Nessun bando trovato nel risultato. Riprova.');
-    }
+    if (allBandi.length === 0) throw new Error('Nessun bando trovato. Riprova.');
 
     setCache(allBandi);
     renderAll();
-    document.getElementById('lastUpdate').textContent =
-      'Aggiornato ora · ' + new Date().toLocaleString('it-IT');
+    document.getElementById('lastUpdate').textContent = 'Aggiornato ora · ' + new Date().toLocaleString('it-IT');
 
   } catch (err) {
     console.error('Errore runSearch:', err);
     showError('⚠ ' + err.message);
-    grid.innerHTML = '<div class="empty-state" style="flex-direction:column;gap:12px">' +
-      '<div>Errore durante la ricerca.</div>' +
-      '<button onclick="runSearch()" style="background:var(--gold);color:#000;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:12px">↻ Riprova</button>' +
-      '</div>';
+    grid.innerHTML = '<div class="empty-state" style="display:flex;flex-direction:column;gap:12px"><div>Errore durante la ricerca.</div><button onclick="runSearch()" style="background:var(--gold);color:#000;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:12px">↻ Riprova</button></div>';
   }
 
   btn.disabled = false;
   btn.textContent = '↻ Aggiorna';
 }
 
-// ─── RENDER ──────────────────────────────────────────────────────────────────
-function renderAll() {
-  updateCounts();
-  renderCards();
-}
+function renderAll() { updateCounts(); renderCards(); }
 
 function renderCards() {
   const query = document.getElementById('searchInput').value.toLowerCase();
   let bandi = [...allBandi];
-
-  if (query) {
-    bandi = bandi.filter(b =>
-      (b.titolo||'').toLowerCase().includes(query) ||
-      (b.ente||'').toLowerCase().includes(query) ||
-      (b.beneficiari||'').toLowerCase().includes(query) ||
-      (b.oggetto||'').toLowerCase().includes(query)
-    );
-  }
-
-  if (activeFilter === 'alta')      bandi = bandi.filter(b => b.priorita === 1);
-  if (activeFilter === 'scadenza')  bandi = bandi.filter(b => isUrgent(b.scadenza));
-  if (activeFilter === 'documenti') bandi = bandi.filter(b => b.documenti && b.documenti.length > 0);
-  if (activeSource !== 'tutte')     bandi = bandi.filter(b => b.fonte === activeSource);
-
+  if (query) bandi = bandi.filter(b =>
+    (b.titolo||'').toLowerCase().includes(query) ||
+    (b.ente||'').toLowerCase().includes(query) ||
+    (b.beneficiari||'').toLowerCase().includes(query) ||
+    (b.oggetto||'').toLowerCase().includes(query)
+  );
+  if (activeFilter === 'alta')     bandi = bandi.filter(b => b.priorita === 1);
+  if (activeFilter === 'scadenza') bandi = bandi.filter(b => isUrgent(b.scadenza));
+  if (activeSource !== 'tutte')    bandi = bandi.filter(b => b.fonte === activeSource);
   bandi = sortBandi(bandi, activeSort);
-
   const grid = document.getElementById('cardsGrid');
-  if (bandi.length === 0) {
-    grid.innerHTML = '<div class="empty-state">Nessun bando corrisponde ai filtri.</div>';
-    return;
-  }
+  if (bandi.length === 0) { grid.innerHTML = '<div class="empty-state">Nessun bando corrisponde ai filtri.</div>'; return; }
   grid.innerHTML = bandi.map(cardHTML).join('');
 }
 
 function cardHTML(b) {
   const pClass = b.priorita === 1 ? 'p-alta' : b.priorita === 2 ? 'p-media' : 'p-bassa';
   const urgent = isUrgent(b.scadenza);
-  const hasDocs = b.documenti && b.documenti.length > 0;
-  const docsHTML = hasDocs
-    ? b.documenti.map(d => '<a class="doc-item" href="' + escHtml(d.url) + '" target="_blank" rel="noopener"><span class="doc-icon">📄</span><span>' + escHtml(d.nome) + '</span></a>').join('')
-    : '<span style="font-size:12px;color:var(--text-dim);font-family:var(--font-mono)">Nessun documento allegato</span>';
+  const srcUrls = SOURCE_URLS[b.fonte] || {};
+
+  // Costruisci i link verificati
+  let linksHTML = '';
+  linksHTML += '<a class="source-link primary" href="' + escHtml(b.url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 Vai al bando ↗</a>';
+  if (srcUrls.home && b.url !== srcUrls.home) {
+    linksHTML += '<a class="source-link secondary" href="' + escHtml(srcUrls.home) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">📋 Tutti i bandi ' + escHtml(b.fonte_label) + ' ↗</a>';
+  }
 
   return '<div class="bando-card" data-source="' + escHtml(b.fonte) + '" onclick="toggleCard(this)">' +
     '<div class="card-header">' +
-      '<span class="card-source-badge badge-' + escHtml(b.fonte) + '">' + escHtml(b.fonte_label || b.fonte) + '</span>' +
+      '<span class="card-source-badge badge-' + escHtml(b.fonte) + '">' + escHtml(b.fonte_label) + '</span>' +
       '<div class="card-title">' + escHtml(b.titolo) + '</div>' +
       '<div class="priority-badge ' + pClass + '">' + (b.priorita === 1 ? '!' : '·') + '</div>' +
     '</div>' +
@@ -1131,35 +493,33 @@ function cardHTML(b) {
     '</div>' +
     '<div class="card-desc">' + escHtml(b.oggetto) + '</div>' +
     '<div class="card-footer">' +
-      '<a class="card-link" href="' + escHtml(b.url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Scheda bando ↗</a>' +
-      '<button class="docs-btn ' + (hasDocs ? 'has-docs' : '') + '" onclick="event.stopPropagation();toggleCard(this.closest(\'.bando-card\'))">📎 ' + (hasDocs ? b.documenti.length + ' doc' : 'Dettagli') + '</button>' +
+      '<a class="card-link" href="' + escHtml(b.url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Vai al bando ↗</a>' +
+      '<button class="expand-btn" onclick="event.stopPropagation();toggleCard(this.closest(\'.bando-card\'))">Dettagli ▾</button>' +
     '</div>' +
     '<div class="card-expanded">' +
-      '<div class="beneficiari-row"><div class="beneficiari-label">Beneficiari</div><div class="beneficiari-text">' + escHtml(b.beneficiari || 'N.D.') + '</div></div>' +
-      '<div class="beneficiari-label" style="margin-top:10px;margin-bottom:4px">Documenti</div>' +
-      '<div class="docs-list">' + docsHTML + '</div>' +
+      '<div class="detail-label">Beneficiari</div>' +
+      '<div class="detail-text">' + escHtml(b.beneficiari || 'N.D.') + '</div>' +
+      (b.note_accesso ? '<div class="detail-label">Come accedere</div><div class="detail-text">' + escHtml(b.note_accesso) + '</div>' : '') +
+      '<div class="detail-label">Link ufficiali verificati</div>' +
+      '<div class="source-link-row">' + linksHTML + '</div>' +
+      '<div class="warning-note">⚠ Verifica sempre la pagina ufficiale per scadenze aggiornate e requisiti definitivi.</div>' +
     '</div>' +
   '</div>';
 }
 
 function toggleCard(card) { card.classList.toggle('expanded'); }
 
-// ─── COUNTS ──────────────────────────────────────────────────────────────────
 function updateCounts() {
   const total = allBandi.length;
   const alta  = allBandi.filter(b => b.priorita === 1).length;
   const scad  = allBandi.filter(b => isUrgent(b.scadenza)).length;
-  const docs  = allBandi.filter(b => b.documenti && b.documenti.length > 0).length;
-
-  document.getElementById('cnt-all').textContent   = total;
-  document.getElementById('cnt-alta').textContent  = alta;
-  document.getElementById('cnt-scad').textContent  = scad;
-  document.getElementById('cnt-docs').textContent  = docs;
-  document.getElementById('hdrTotal').textContent  = total;
-  document.getElementById('hdrAlta').textContent   = alta;
-  document.getElementById('hdrScad').textContent   = scad;
-  document.getElementById('scnt-all').textContent  = total;
-
+  document.getElementById('cnt-all').textContent  = total;
+  document.getElementById('cnt-alta').textContent = alta;
+  document.getElementById('cnt-scad').textContent = scad;
+  document.getElementById('hdrTotal').textContent = total;
+  document.getElementById('hdrAlta').textContent  = alta;
+  document.getElementById('hdrScad').textContent  = scad;
+  document.getElementById('scnt-all').textContent = total;
   SOURCES_INFO.forEach(src => {
     const cnt = allBandi.filter(b => b.fonte === src.id).length;
     const el = document.getElementById('scnt-' + src.id);
@@ -1167,7 +527,6 @@ function updateCounts() {
   });
 }
 
-// ─── FILTERS / SORT ──────────────────────────────────────────────────────────
 function setFilter(f, btn) {
   activeFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1196,27 +555,20 @@ function sortBandi(bandi, key) {
     return 0;
   });
 }
-
 function parseDate(d) {
   if (!d) return 99999999;
   const p = d.split('/');
   return p.length === 3 ? parseInt(p[2]+p[1]+p[0]) : 99999999;
 }
-function parseImporto(imp) {
-  return parseInt((imp||'').replace(/[^\d]/g,'')) || 0;
-}
-function isUrgent(scadenza) {
-  const p = (scadenza||'').split('/');
+function parseImporto(imp) { return parseInt((imp||'').replace(/[^\d]/g,'')) || 0; }
+function isUrgent(s) {
+  const p = (s||'').split('/');
   if (p.length !== 3) return false;
   const d = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
-  const diff = (d - Date.now()) / 86400000;
-  return diff >= 0 && diff <= 14;
+  return (d - Date.now()) / 86400000 <= 14 && (d - Date.now()) / 86400000 >= 0;
 }
 
-// ─── CACHE ───────────────────────────────────────────────────────────────────
-function setCache(bandi) {
-  localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), bandi }));
-}
+function setCache(bandi) { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), bandi })); }
 function getCache() {
   try {
     const obj = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
@@ -1224,12 +576,8 @@ function getCache() {
     return obj;
   } catch { return null; }
 }
-function clearCache() {
-  localStorage.removeItem(CACHE_KEY);
-  location.reload();
-}
+function clearCache() { localStorage.removeItem(CACHE_KEY); location.reload(); }
 
-// ─── UTILS ───────────────────────────────────────────────────────────────────
 function escHtml(str) {
   return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
